@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Weiwei's AI Hub: one home page for five AI tools for meetings, managing, projects, planning and life.">
+<meta name="description" content="Weiwei's AI Hub: one home page for AI tools that help with meetings, managing, projects, planning and life, plus a fresh line to start each day.">
 <meta property="og:title" content="Weiwei's AI Hub">
-<meta property="og:description" content="Five AI tools for meetings, managing, projects, planning and life, in one place.">
+<meta property="og:description" content="AI helpers for meetings, managing, projects, planning and life, all in one place.">
 <meta property="og:image" content="https://wei-wei-hu.github.io/ai-hub/docs/preview-laptop.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='12' fill='%231e2b4d'/%3E%3Cpath d='M12 5l1.5 4 4 1.4-4 1.2L12 16l-1.5-4.4-4-1.2 4-1.4z' fill='%23f08a3c'/%3E%3C/svg%3E">
 <style>*,*::before,*::after{box-sizing:border-box}html,body{margin:0;padding:0}</style>
@@ -248,6 +248,8 @@ body.hasnotes .maincol { padding-bottom: 76px; }
   .qnfab { right: 16px; bottom: 16px; }
   .qnpanel { right: 16px; bottom: 16px; }
 }
+.notetag { border: 0; background: none; padding: 0; font: inherit; font-size: 12px; font-weight: 600; color: var(--c); cursor: pointer; }
+.notetag:hover { text-decoration: underline; }
 @media (prefers-reduced-motion: reduce) { .stop circle.ring { transition: none; } }
 </style>
 
@@ -274,7 +276,7 @@ body.hasnotes .maincol { padding-bottom: 76px; }
 <button class="qnfab" id="qnFab" type="button" hidden aria-haspopup="dialog"><i aria-hidden="true">+</i>Quick note</button>
 <div class="qnpanel" id="qnPanel" role="dialog" aria-modal="false" aria-labelledby="qnTitle" hidden>
   <div class="qnhead"><h2 id="qnTitle">Quick note</h2><button class="qnclose" id="qnClose" type="button" aria-label="Close">&times;</button></div>
-  <p class="qnsub">Jot it down. It will wait on the right tool's page.</p>
+  <p class="qnsub" id="qnSub">Jot it down. It will wait on the right tool's page.</p>
   <textarea id="qnText" maxlength="1000" placeholder="e.g. Ask Lin for the vendor quote by Friday"></textarea>
   <div class="qnlabel">Send to</div>
   <div class="qnchips" id="qnChips"></div>
@@ -761,7 +763,7 @@ body.hasnotes .maincol { padding-bottom: 76px; }
     main.innerHTML =
       '<section class="slide">' + sparkle('tr') + sparkle('bl') +
         '<div class="hero"><div><div class="eyebrow">Weiwei\'s AI Hub</div><h1 class="title" style="margin-top:10px">' + greeting(now.getHours()) + ',<br>Weiwei</h1>' +
-        '<p class="lede">Five AI tools for meetings, managing, projects, planning and life. Pick a stop to begin.</p></div>' +
+        '<p class="lede">Your AI helpers for meetings, managing, projects, planning and life, all in one place. Pick a stop and let\'s make today count.</p></div>' +
         '<div class="timebox"><div class="clock" id="clock"></div><div style="color:var(--muted);font-size:13.5px">' + fmtDate(now) + '</div>' +
         '<div class="pills"><span class="pill hot">Week ' + weekNo(now) + '</span><span class="pill">' + left + '</span></div></div></div>' +
       '</section>' +
@@ -773,6 +775,7 @@ body.hasnotes .maincol { padding-bottom: 76px; }
           return '<button class="stopcard" data-page="' + t.id + '" style="--c:' + t.c + '"><span class="num">' + two(i + 1) + '</span><b>' + esc(t.name) + '</b><span>' + esc(t.short) + '</span></button>';
         }).join('') + '</div>' +
       '</section>' +
+      '<section class="slide notesslide" id="allNotes" style="--c:var(--orange)" hidden></section>' +
       '';
     var tick = function () { var el = document.getElementById('clock'); if (el) el.textContent = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' }); };
     tick();
@@ -781,59 +784,113 @@ body.hasnotes .maincol { padding-bottom: 76px; }
   }
 
   var samplePromise = window.claude && window.claude.use ? window.claude.use('sample').catch(function () { return null; }) : Promise.resolve(null);
-  var liftOff = false;
+  var liftAI = null;
+  samplePromise.then(function (s) { liftAI = s; });
+  var AI_OFF = ['not_granted', 'sampling_disabled', 'not_declared', 'capability_disabled', 'capability_removed'];
 
-  function setupLift(dailyLine) {
-    var form = document.getElementById('lift');
-    samplePromise.then(function (sample) {
-      if (!sample || liftOff || !document.body.contains(form)) return;
-      form.hidden = false;
-      var input = document.getElementById('liftIn'), btn = document.getElementById('liftBtn');
-      var label = document.getElementById('lineLabel'), text = document.getElementById('lineText'), why = document.getElementById('liftWhy');
-      function showDaily() {
-        label.textContent = 'Today\'s line'; text.textContent = dailyLine; why.textContent = '';
-      }
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var mood = input.value.trim();
-        if (!mood) { input.focus(); return; }
-        btn.disabled = true; btn.textContent = 'Finding...'; why.textContent = '';
-        var list = QUOTES.map(function (x, i) { return i + ': ' + x; }).join('\n');
-        var prompt = 'Someone opened their personal hub and shared what is on their mind today. ' +
-          'Choose the ONE line from the numbered list below that would encourage them most right now, given what they wrote. ' +
-          'Then write one warm, specific sentence (under 25 words, plain English) explaining why this line fits their day. ' +
-          'Reply with only JSON: {"index": number, "why": string}\n\n' +
-          'What is on their mind (between the markers):\n<<<' + mood + '>>>\n\nLines:\n' + list;
-        sample.json(prompt, { modelTier: 'quick' }).then(function (r) {
-          var i = Number(r && r.index);
-          if (!(i >= 0 && i < QUOTES.length && Math.floor(i) === i)) throw { code: 'invalid_json' };
-          label.textContent = 'Your line for right now';
-          text.textContent = QUOTES[i];
-          why.textContent = r.why ? String(r.why).slice(0, 220) + ' ' : '';
-          var reset = document.createElement('button');
-          reset.type = 'button'; reset.className = 'liftreset'; reset.textContent = 'Back to today\'s line';
-          reset.addEventListener('click', showDaily);
-          why.appendChild(reset);
-        }).catch(function (err) {
-          var code = err && err.code;
-          if (code === 'not_granted' || code === 'sampling_disabled' || code === 'not_declared' || code === 'capability_disabled' || code === 'capability_removed') {
-            liftOff = true; form.hidden = true; showDaily(); return;
-          }
-          if (code === 'cancelled') return;
-          why.textContent = code === 'rate_limited' ? 'Lots of requests just now. Please try again in a little while.' : 'That didn\'t work this time. Please try again.';
-        }).then(function () { btn.disabled = false; btn.textContent = 'Find my line'; });
-      });
+  // Keyword matcher, used wherever Claude's AI is not available (for example on GitHub Pages).
+  var MOODS = [
+    { k: ['nervous', 'anxious', 'scared', 'afraid', 'worried', 'worry', 'stress', 'presentation', 'pitch', 'interview', 'speech'], t: ['courage', 'brave', 'calm', 'breathe', 'ready', 'prepar', 'confidence'], why: 'A steadying line for a moment that asks for courage.' },
+    { k: ['tired', 'exhausted', 'sleepy', 'burn', 'drained', 'sick', 'low energy'], t: ['rest', 'sleep', 'breath', 'break', 'pace', 'energy', 'walk', 'body'], why: 'A gentle reminder that rest helps you do your best work.' },
+    { k: ['stuck', 'blocked', 'procrastinat', 'unmotivated', 'avoid', 'putting off', 'cant start', "can't start"], t: ['stuck', 'start', 'first', 'small', 'shrink', 'begin', 'step'], why: 'A small first step is often all it takes to get moving.' },
+    { k: ['overwhelm', 'busy', 'too much', 'swamped', 'juggl', 'chaos', 'behind', 'so much'], t: ['one thing', 'priorit', 'simplif', 'focus', 'write', 'list', 'three', 'less'], why: 'When there is a lot on your plate, one thing at a time helps.' },
+    { k: ['team', 'conflict', 'colleague', 'boss', 'manager', 'feedback', 'argument', 'conversation', '1:1', 'one-on-one', 'people'], t: ['listen', 'kind', 'trust', 'conversation', 'feedback', 'team', 'people', 'question'], why: 'A line for the people side of your day.' },
+    { k: ['sad', 'down', 'fail', 'mistake', 'reject', 'lost', 'disappoint', 'upset', 'bad day', 'hard day', 'setback'], t: ['setback', 'lesson', 'mistake', 'hard day', 'proud', 'hope', 'patience', 'grown'], why: 'Hard days pass, and they teach something along the way.' },
+    { k: ['deadline', 'late', 'due', 'rush', 'urgent', 'launch', 'deliver', 'ship'], t: ['done', 'progress', 'first', 'start', 'finish', 'focus', 'perfect'], why: 'Progress you can see beats perfect work that arrives late.' },
+    { k: ['learn', 'new job', 'new role', 'new tool', ' ai ', 'study', 'course', 'skill', 'beginner'], t: ['learn', 'skill', 'curious', 'beginner', 'teach', 'tool'], why: 'Every new skill feels awkward before it feels natural.' },
+    { k: ['decide', 'decision', 'choice', 'choose', 'unsure', 'uncertain', 'options'], t: ['decid', 'decision', 'choose', 'choice', 'values', 'uncertain'], why: 'A line to help you choose with confidence.' },
+    { k: ['meeting', 'call', 'workshop'], t: ['meeting', 'question', 'listen', 'decision'], why: 'A line to make your meetings count.' },
+    { k: ['happy', 'great', 'excited', ' win', ' won', 'promot', 'proud', 'good day', 'celebrat', 'grateful'], t: ['celebrat', 'win', 'joy', 'gratitude', 'thank', 'proud'], why: 'Good days deserve to be noticed and enjoyed.' },
+    { k: ['plan', 'week', 'goal', 'strategy', 'future'], t: ['plan', 'goal', 'week', 'future', 'calendar', 'priorit'], why: 'A line for setting up the days ahead.' }
+  ];
+
+  function localPick(text) {
+    var s = ' ' + text.toLowerCase() + ' ';
+    var terms = [], why = '';
+    MOODS.forEach(function (m) {
+      if (m.k.some(function (w) { return s.indexOf(w) >= 0; })) { terms = terms.concat(m.t); why = why || m.why; }
+    });
+    s.split(/[^a-z']+/).forEach(function (w) { if (w.length > 4) terms.push(w); });
+    var best = [], top = 0;
+    QUOTES.forEach(function (q, i) {
+      var l = q.toLowerCase(), sc = 0;
+      terms.forEach(function (t) { if (l.indexOf(t) >= 0) sc++; });
+      if (sc > top) { top = sc; best = [i]; } else if (sc && sc === top) best.push(i);
+    });
+    if (!top) return { index: Math.floor(Math.random() * QUOTES.length), why: 'A fresh line for right now.' };
+    return { index: best[Math.floor(Math.random() * best.length)], why: why || 'Picked to match what you shared.' };
+  }
+
+  function aiLine(mood) {
+    var list = QUOTES.map(function (x, i) { return i + ': ' + x; }).join('\n');
+    var prompt = 'Someone opened their personal hub and shared what is on their mind today. ' +
+      'Choose the ONE line from the numbered list below that would encourage them most right now, given what they wrote. ' +
+      'Then write one warm, specific sentence (under 25 words, plain English) explaining why this line fits their day. ' +
+      'Reply with only JSON: {"index": number, "why": string}\n\n' +
+      'What is on their mind (between the markers):\n<<<' + mood + '>>>\n\nLines:\n' + list;
+    return liftAI.json(prompt, { modelTier: 'quick' }).then(function (r) {
+      var i = Number(r && r.index);
+      if (!(i >= 0 && i < QUOTES.length && Math.floor(i) === i)) throw { code: 'invalid_json' };
+      return { index: i, why: r.why ? String(r.why).slice(0, 220) : '' };
     });
   }
 
-  // Quick notes: private per viewer, sorted to a tool, shown on that tool's page.
-  var notesDb = null, notesCol = null, NOTES = [], notesOn = false, qnChoice = 'auto', qnSample = null;
+  function setupLift(dailyLine) {
+    var form = document.getElementById('lift');
+    var input = document.getElementById('liftIn'), btn = document.getElementById('liftBtn');
+    var label = document.getElementById('lineLabel'), text = document.getElementById('lineText'), why = document.getElementById('liftWhy');
+    form.hidden = false;
+    function showDaily() { label.textContent = 'Today\'s line'; text.textContent = dailyLine; why.textContent = ''; }
+    function showPick(r) {
+      label.textContent = 'Your line for right now';
+      text.textContent = QUOTES[r.index];
+      why.textContent = r.why ? r.why + ' ' : '';
+      var reset = document.createElement('button');
+      reset.type = 'button'; reset.className = 'liftreset'; reset.textContent = 'Back to today\'s line';
+      reset.addEventListener('click', showDaily);
+      why.appendChild(reset);
+    }
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var mood = input.value.trim();
+      if (!mood) { input.focus(); return; }
+      if (!liftAI) { showPick(localPick(mood)); return; }
+      btn.disabled = true; btn.textContent = 'Finding...'; why.textContent = '';
+      aiLine(mood).then(showPick).catch(function (err) {
+        var code = err && err.code;
+        if (AI_OFF.indexOf(code) >= 0) { liftAI = null; showPick(localPick(mood)); return; }
+        if (code === 'cancelled') return;
+        why.textContent = code === 'rate_limited' ? 'Lots of requests just now. Please try again in a little while.' : 'That didn\'t work this time. Please try again.';
+      }).then(function () { btn.disabled = false; btn.textContent = 'Find my line'; });
+    });
+  }
+
+  // Quick notes: sorted to a tool and shown on that tool's page.
+  // Inside Claude they are saved privately to the viewer's account; elsewhere, in this browser.
+  var notesCol = null, notesMode = '', NOTES = [], notesOn = false, qnChoice = 'auto', qnSample = null;
+  var LOCAL_KEY = 'hub-quick-notes';
   var fab = document.getElementById('qnFab'), panel = document.getElementById('qnPanel');
   var qnText = document.getElementById('qnText'), qnChips = document.getElementById('qnChips');
   var qnAdd = document.getElementById('qnAdd'), qnMsg = document.getElementById('qnMsg');
+  var TOOL_WORDS = {
+    minutes: ['meeting', 'minutes', 'agenda', 'action item', 'notes from', 'call with', 'follow up', 'follow-up', 'recap', 'transcript'],
+    playbook: ['1:1', 'one-on-one', 'feedback', 'coach', 'mentor', 'report', 'manager', 'direct report', 'hire', 'hiring', 'interview', 'performance', 'review', 'promotion', 'team member', 'boss'],
+    board: ['project', 'milestone', 'status', 'launch', 'risk', 'program', 'roadmap', 'release', 'vendor', 'budget', 'stakeholder', 'quote', 'deliverable'],
+    planner: ['this week', 'next week', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'tomorrow', 'schedule', 'calendar', 'by friday', 'today', 'to do', 'todo'],
+    life: ['gym', 'run', 'running', 'health', 'family', 'kids', 'travel', 'trip', 'hobby', 'read', 'book', 'friend', 'life', 'sleep', 'money', 'home', 'dream', 'yoga', 'learn', 'vacation', 'birthday']
+  };
 
   function toolById(id) { for (var i = 0; i < TOOLS.length; i++) if (TOOLS[i].id === id) return TOOLS[i]; return null; }
   function notesFor(id) { return NOTES.filter(function (n) { return n.tool === id; }); }
+
+  function localSort(text) {
+    var s = ' ' + text.toLowerCase() + ' ', best = null, top = 0;
+    TOOLS.forEach(function (t) {
+      var sc = (TOOL_WORDS[t.id] || []).filter(function (w) { return s.indexOf(w) >= 0; }).length;
+      if (sc > top) { top = sc; best = t.id; }
+    });
+    return best;
+  }
 
   function paintBadges() {
     Array.prototype.forEach.call(document.querySelectorAll('.nav[data-page], .stopcard[data-page]'), function (el) {
@@ -863,8 +920,94 @@ body.hasnotes .maincol { padding-bottom: 76px; }
     return ok ? Promise.resolve() : Promise.reject();
   }
 
+  // Storage: Claude's private per-viewer store, or this browser's localStorage.
+  function readLocal() {
+    try { var a = JSON.parse(localStorage.getItem(LOCAL_KEY) || '[]'); return Array.isArray(a) ? a : []; } catch (e) { return []; }
+  }
+  function writeLocal(a) { localStorage.setItem(LOCAL_KEY, JSON.stringify(a)); }
+  function setNotes(list) {
+    NOTES = list.map(function (x) { return { id: String(x.id), text: String(x.text || ''), tool: x.tool, created: Number(x.created) || 0 }; })
+      .filter(function (n) { return n.text && toolById(n.tool); })
+      .sort(function (a, b) { return a.created - b.created; });
+    paintNotes();
+  }
+  function saveNote(n) {
+    if (notesMode === 'claude') return notesCol.add(n);
+    return new Promise(function (res) {
+      var a = readLocal();
+      n.id = 'n' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+      a.push(n); writeLocal(a); setNotes(a); res();
+    });
+  }
+  function removeNote(id) {
+    if (notesMode === 'claude') return notesCol.doc(id).delete();
+    return new Promise(function (res) {
+      var a = readLocal().filter(function (x) { return x.id !== id; });
+      writeLocal(a); setNotes(a); res();
+    });
+  }
+  function turnOn(mode) {
+    notesMode = mode; notesOn = true;
+    document.body.classList.add('hasnotes');
+    if (panel.hidden) fab.hidden = false;
+    document.getElementById('qnSub').textContent = mode === 'claude'
+      ? 'Jot it down. It will wait on the right tool\'s page, saved privately to your account.'
+      : 'Jot it down. It will wait on the right tool\'s page, saved in this browser.';
+  }
+  function useLocal() {
+    try { localStorage.setItem(LOCAL_KEY + '-test', '1'); localStorage.removeItem(LOCAL_KEY + '-test'); } catch (e) { return; }
+    turnOn('local');
+    setNotes(readLocal());
+    window.addEventListener('storage', function (e) { if (e.key === LOCAL_KEY) setNotes(readLocal()); });
+  }
+
+  function noteItem(n, withTool) {
+    var li = document.createElement('li');
+    var done = document.createElement('button');
+    done.type = 'button'; done.className = 'notecheck'; done.setAttribute('aria-label', 'Mark done and remove');
+    done.addEventListener('click', function () {
+      done.disabled = true;
+      removeNote(n.id).catch(function () { done.disabled = false; });
+    });
+    var txt = document.createElement('div'); txt.className = 'notetext';
+    txt.textContent = n.text;
+    var meta = document.createElement('small');
+    meta.textContent = new Date(n.created).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    if (withTool) {
+      var t = toolById(n.tool), tag = document.createElement('button');
+      tag.type = 'button'; tag.className = 'notetag'; tag.dataset.page = t.id; tag.style.setProperty('--c', t.c);
+      tag.textContent = t.name;
+      meta.appendChild(document.createTextNode(' · '));
+      meta.appendChild(tag);
+    }
+    txt.appendChild(meta);
+    var cp = document.createElement('button');
+    cp.type = 'button'; cp.className = 'notecopy'; cp.textContent = 'Copy';
+    cp.addEventListener('click', function () {
+      copyText(n.text).then(function () { cp.textContent = 'Copied'; }, function () { cp.textContent = 'Select to copy'; });
+      setTimeout(function () { cp.textContent = 'Copy'; }, 1800);
+    });
+    li.appendChild(done); li.appendChild(txt); li.appendChild(cp);
+    return li;
+  }
+
   function paintToolNotes() {
-    var box = document.getElementById('toolNotes');
+    var box = document.getElementById('toolNotes'), all = document.getElementById('allNotes');
+    if (all) {
+      all.hidden = !notesOn;
+      if (notesOn) {
+        all.innerHTML = '<div class="noteshead"><h3>Your quick notes</h3><span>' + (NOTES.length ? NOTES.length + ' waiting. Copy one into its tool, then tick it off.' : 'Ideas, to-dos and reminders you jot down land here.') + '</span></div>';
+        if (!NOTES.length) {
+          var e = document.createElement('p'); e.className = 'notesempty';
+          e.textContent = 'Nothing yet. Tap + Quick note at the bottom right to jot one down.';
+          all.appendChild(e);
+        } else {
+          var ul0 = document.createElement('ul'); ul0.className = 'notelist';
+          NOTES.slice().reverse().forEach(function (n) { ul0.appendChild(noteItem(n, true)); });
+          all.appendChild(ul0);
+        }
+      }
+    }
     if (!box) return;
     if (!notesOn) { box.hidden = true; return; }
     var t = toolById(box.dataset.tool), list = notesFor(t.id);
@@ -872,32 +1015,11 @@ body.hasnotes .maincol { padding-bottom: 76px; }
     box.innerHTML = '<div class="noteshead"><h3>Quick notes for ' + esc(t.name) + '</h3><span>Copy a note into the tool, then tick it off.</span></div>';
     if (!list.length) {
       var p = document.createElement('p'); p.className = 'notesempty';
-      p.textContent = 'Nothing waiting here. Tap Quick note any time to add one.';
+      p.textContent = 'Nothing waiting here. Tap + Quick note any time to add one.';
       box.appendChild(p); return;
     }
     var ul = document.createElement('ul'); ul.className = 'notelist';
-    list.forEach(function (n) {
-      var li = document.createElement('li');
-      var done = document.createElement('button');
-      done.type = 'button'; done.className = 'notecheck'; done.setAttribute('aria-label', 'Mark done and remove');
-      done.addEventListener('click', function () {
-        done.disabled = true;
-        notesCol.doc(n.id).delete().catch(function () { done.disabled = false; });
-      });
-      var txt = document.createElement('div'); txt.className = 'notetext';
-      txt.textContent = n.text;
-      var when = document.createElement('small');
-      when.textContent = new Date(n.created).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-      txt.appendChild(when);
-      var cp = document.createElement('button');
-      cp.type = 'button'; cp.className = 'notecopy'; cp.textContent = 'Copy';
-      cp.addEventListener('click', function () {
-        copyText(n.text).then(function () { cp.textContent = 'Copied'; }, function () { cp.textContent = 'Select to copy'; });
-        setTimeout(function () { cp.textContent = 'Copy'; }, 1800);
-      });
-      li.appendChild(done); li.appendChild(txt); li.appendChild(cp);
-      ul.appendChild(li);
-    });
+    list.forEach(function (n) { ul.appendChild(noteItem(n, false)); });
     box.appendChild(ul);
   }
 
@@ -905,7 +1027,7 @@ body.hasnotes .maincol { padding-bottom: 76px; }
 
   function paintChips() {
     qnChips.innerHTML = '';
-    var opts = (qnSample ? [{ id: 'auto', name: 'Let AI choose', c: 'var(--orange)' }] : []).concat(TOOLS);
+    var opts = [{ id: 'auto', name: qnSample ? 'Let AI choose' : 'Auto-sort', c: 'var(--orange)' }].concat(TOOLS);
     opts.forEach(function (o) {
       var b = document.createElement('button');
       b.type = 'button'; b.className = 'qnchip'; b.textContent = o.name;
@@ -916,11 +1038,7 @@ body.hasnotes .maincol { padding-bottom: 76px; }
     });
   }
 
-  function openPanel() {
-    panel.hidden = false; fab.hidden = true;
-    if (!qnSample && qnChoice === 'auto') qnChoice = null;
-    paintChips(); qnText.focus();
-  }
+  function openPanel() { panel.hidden = false; fab.hidden = true; paintChips(); qnText.focus(); }
   function closePanel() { panel.hidden = true; fab.hidden = !notesOn; fab.focus(); }
 
   function aiPick(text) {
@@ -940,30 +1058,35 @@ body.hasnotes .maincol { padding-bottom: 76px; }
     if (!text) { qnText.focus(); return; }
     if (!qnChoice) { qnMsg.textContent = 'Pick a tool for this note.'; return; }
     qnAdd.disabled = true;
+    var noPick = { pickMsg: 'Not sure where this one goes. Pick a tool and add it again.' };
     var pick;
-    if (qnChoice === 'auto') {
+    if (qnChoice !== 'auto') pick = Promise.resolve(qnChoice);
+    else if (qnSample) {
       qnMsg.textContent = 'Finding the right tool...';
       pick = aiPick(text).catch(function (err) {
-        var code = err && err.code;
-        if (code === 'not_granted' || code === 'sampling_disabled' || code === 'not_declared' || code === 'capability_disabled' || code === 'capability_removed') qnSample = null;
-        qnChoice = null; paintChips();
-        throw { pickMsg: 'AI could not sort this one. Pick a tool and add it again.' };
+        if (AI_OFF.indexOf(err && err.code) >= 0) qnSample = null;
+        var id = localSort(text);
+        if (id) return id;
+        throw noPick;
       });
-    } else pick = Promise.resolve(qnChoice);
+    } else {
+      var id0 = localSort(text);
+      pick = id0 ? Promise.resolve(id0) : Promise.reject(noPick);
+    }
     pick.then(function (id) {
-      return notesCol.add({ text: text.slice(0, 1000), tool: id, created: Date.now() }).then(function () { return id; });
+      return saveNote({ text: text.slice(0, 1000), tool: id, created: Date.now() }).then(function () { return id; });
     }).then(function (id) {
-      var t = toolById(id);
       qnText.value = '';
-      qnMsg.textContent = 'Saved to ' + t.name + '. ';
+      qnMsg.textContent = 'Saved to ' + toolById(id).name + '. ';
       var go = document.createElement('button');
       go.type = 'button'; go.textContent = 'Open';
       go.addEventListener('click', function () { closePanel(); show(id); });
       qnMsg.appendChild(go);
-      if (qnSample) qnChoice = 'auto';
+      qnChoice = 'auto';
       paintChips();
     }).catch(function (e) {
-      qnMsg.textContent = e && e.pickMsg ? e.pickMsg : (e && e.code === 'quota_exceeded' ? 'Your notes are full. Tick some off, then try again.' : 'That note did not save. Please try again.');
+      if (e && e.pickMsg) { qnChoice = null; paintChips(); qnMsg.textContent = e.pickMsg; return; }
+      qnMsg.textContent = e && e.code === 'quota_exceeded' ? 'Your notes are full. Tick some off, then try again.' : 'That note did not save. Please try again.';
     }).then(function () { qnAdd.disabled = false; });
   }
 
@@ -981,22 +1104,22 @@ body.hasnotes .maincol { padding-bottom: 76px; }
     ]).then(function (r) {
       var db = r[0], user = r[1];
       qnSample = r[2];
-      if (!db || !user) return null;
-      return Promise.all([user.id(), user.isOwner(), user.can('data.write')]).then(function (v) {
-        var uid = v[0];
-        if (!uid || !(v[1] || v[2] === true)) return;
-        notesDb = db;
-        notesCol = db.collection('data/users/' + uid);
+      if (!db || !user) return useLocal();
+      return Promise.all([user.id(), user.isOwner()]).then(function (v) {
+        if (!v[0] || !v[1]) return useLocal();
+        notesCol = db.collection('data/users/' + v[0]);
+        var first = true;
         notesCol.orderBy('created', 'asc').onSnapshot(function (snap) {
-          NOTES = snap.docs.map(function (d) { var x = d.data() || {}; return { id: d.id, text: String(x.text || ''), tool: x.tool, created: x.created || 0 }; })
-            .filter(function (n) { return n.text && toolById(n.tool); });
-          if (!notesOn) { notesOn = true; document.body.classList.add('hasnotes'); if (panel.hidden) fab.hidden = false; }
-          paintNotes();
+          if (first) { first = false; turnOn('claude'); }
+          setNotes(snap.docs.map(function (d) { var x = d.data() || {}; x.id = d.id; return x; }));
         }, function () {
-          notesOn = false; NOTES = []; fab.hidden = true; panel.hidden = true; document.body.classList.remove('hasnotes'); paintNotes();
+          if (notesMode === 'claude') { notesOn = false; NOTES = []; useLocal(); if (!notesOn) { fab.hidden = true; panel.hidden = true; document.body.classList.remove('hasnotes'); } paintNotes(); }
+          else if (first) { first = false; useLocal(); }
         });
       });
-    }).catch(function () {});
+    }).catch(function () { if (!notesOn) useLocal(); });
+  } else {
+    useLocal();
   }
 
   function renderTool(t, idx) {

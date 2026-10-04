@@ -1,12 +1,14 @@
 # Weiwei's AI Hub
 
-One home page for five AI tools, by Weiwei Hu. They cover meetings, managing a team, running projects, planning the week and designing your life. Pick a stop and see what each tool does.
+**🌐 Live page: [wei-wei-hu.github.io/ai-hub](https://wei-wei-hu.github.io/ai-hub/)**
+
+Your AI helpers for meetings, managing, projects, planning and life, all in one place, by Weiwei Hu. Pick a stop on the road and see how each tool can help your day.
 
 ### [Open the AI Hub →](https://wei-wei-hu.github.io/ai-hub/)
 
-It opens in your browser on a phone or laptop. Nothing to install.
+It opens in your browser on a phone or laptop. Nothing to install, and no sign-in.
 
-[![Weiwei's AI Hub Today page on a laptop](docs/preview-laptop.png)](https://wei-wei-hu.github.io/ai-hub/)
+[![Weiwei's AI Hub Today page on a laptop. Click to open the live page.](docs/preview-laptop.png)](https://wei-wei-hu.github.io/ai-hub/)
 
 ## What's inside
 
@@ -23,29 +25,37 @@ The **Today** page greets you with the time, the date, the week number and how m
 Each tool has its own page. It explains what the tool does in three steps and suggests when to use it.
 
 <p>
-  <img src="docs/preview-tool.png" alt="The Weekly Planner page in the AI Hub" width="64%">
-  <img src="docs/preview-phone.png" alt="AI Hub Today page on a phone" width="30%">
+  <a href="https://wei-wei-hu.github.io/ai-hub/"><img src="docs/preview-tool.png" alt="The Weekly Planner page with two quick notes waiting" width="64%"></a>
+  <a href="https://wei-wei-hu.github.io/ai-hub/"><img src="docs/preview-phone.png" alt="AI Hub Today page on a phone" width="30%"></a>
 </p>
 
-## Today's line
+## Today's line and "Need a lift today?"
 
 Every day the Hub shows a short line to start the day well. There are 366 of them, one for each day of the year, so none repeats within a year.
 
-## Extras inside Claude
+Want a line that fits your day? Type what's on your mind, such as "big presentation, feeling nervous," and tap **Find my line**. The Hub picks the line that matches best and tells you why it fits.
 
-The full Hub also runs as a Claude artifact, which adds two AI features:
+[![Need a lift today? box showing a line picked for a nervous day](docs/preview-lift.png)](https://wei-wei-hu.github.io/ai-hub/)
 
-- **Need a lift today?** Type what's on your mind, and Claude picks the line from the 366 that fits your day best. It also adds one sentence on why the line fits.
-- **Quick note.** Jot down a thought from any page, and Claude sorts it to the right tool. The note waits on that tool's page with a Copy button until you tick it off. Notes are private to each person.
+## Quick note
 
-On this public page, both features stay hidden. The daily line and everything else work as usual.
+Tap **+ Quick note** at the bottom right of any page to jot down a thought before it slips away. Choose **Auto-sort** and the Hub sends it to the tool where it fits, or pick a tool yourself.
 
-<img src="docs/preview-quick-note.png" alt="Quick note card with tool choices and an Add note button" width="80%">
+- All your notes show under **Your quick notes** on the Today page.
+- Each tool's page lists the notes waiting for it, and the sidebar shows a count.
+- Tap **Copy** to paste a note into the tool, then tick the circle when it's done.
+- Notes are saved in your own browser. Nobody else can see them, and nothing is sent anywhere.
+
+<p>
+  <a href="https://wei-wei-hu.github.io/ai-hub/"><img src="docs/preview-quick-note.png" alt="Quick note card with tool choices and an Add note button" width="49%"></a>
+  <a href="https://wei-wei-hu.github.io/ai-hub/"><img src="docs/preview-notes.png" alt="Your quick notes section on the Today page" width="49%"></a>
+</p>
 
 ## Full versions
 
 The full versions of the tools are **invite only**. To learn more, visit [Weiwei Hu on LinkedIn](https://www.linkedin.com/in/weiweihu/).
 
+- Live page: https://wei-wei-hu.github.io/ai-hub/
 - LinkedIn: https://www.linkedin.com/in/weiweihu/
 
 © 2026 Weiwei Hu. All rights reserved.
