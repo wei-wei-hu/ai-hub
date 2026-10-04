@@ -258,6 +258,13 @@ body.hasnotes .maincol { padding-bottom: 76px; }
 .byline a i { font-style: normal; color: var(--orange); font-weight: 700; }
 .byline a:hover { border-color: var(--orange); }
 .byline + .main { padding-top: 14px; }
+.inlinenote { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.inlinenote input { flex: 1 1 260px; min-width: 0; font: inherit; font-size: 14.5px; color: var(--ink); background: var(--sunk); border: 2px solid transparent; border-radius: 999px; padding: 11px 18px; }
+.inlinenote input:focus, .inlinenote select:focus { outline: none; border-color: var(--orange); }
+.inlinenote select { flex: 0 1 190px; min-width: 0; font: inherit; font-size: 14px; font-weight: 600; color: var(--navy); background: var(--sunk); border: 2px solid transparent; border-radius: 999px; padding: 10px 14px; }
+.qnadd.inadd { width: auto; margin-top: 0; padding: 10px 20px; }
+#allList .notelist { margin-top: 6px; }
+#inMsg:empty { display: none; }
 @media (prefers-reduced-motion: reduce) { .stop circle.ring { transition: none; } }
 </style>
 
@@ -778,15 +785,20 @@ body.hasnotes .maincol { padding-bottom: 76px; }
       '</section>' +
       '<section class="slide quote"><span class="dot">' + svg('quote') + '</span><div><div class="eyebrow" id="lineLabel">Today\'s line</div><p id="lineText">' + esc(q) + '</p><p class="liftwhy" id="liftWhy" aria-live="polite"></p>' +
         '<form class="lift" id="lift" hidden><label for="liftIn">Need a lift today?</label><div class="liftrow"><input id="liftIn" maxlength="300" autocomplete="off" placeholder="e.g. big presentation, feeling nervous"><button class="liftbtn" id="liftBtn" type="submit">Find my line</button></div></form></div></section>' +
+      '<section class="slide notesslide" id="allNotes" style="--c:var(--orange)" hidden>' +
+        '<div class="noteshead"><h3>Your quick notes</h3><span id="allCount"></span></div>' +
+        '<form class="inlinenote" id="inNote"><input id="inText" maxlength="1000" autocomplete="off" aria-label="New quick note" placeholder="Jot a note, e.g. book a yoga class">' +
+        '<select id="inTool" aria-label="Send to"></select><button class="qnadd inadd" id="inAdd" type="submit"><b aria-hidden="true">+</b>Add note</button></form>' +
+        '<p class="qnmsg" id="inMsg" aria-live="polite"></p><div id="allList"></div></section>' +
       '<section class="slide"><div class="roadhead"><h2>What\'s on your mind today?</h2><span>Pick a stop. Each one helps with a different part of your day.</span></div>' +
         '<div class="roadwrap">' + road() + '</div>' +
         '<div class="stops">' + TOOLS.map(function (t, i) {
           return '<button class="stopcard" data-page="' + t.id + '" style="--c:' + t.c + '"><span class="num">' + two(i + 1) + '</span><b>' + esc(t.name) + '</b><span>' + esc(t.short) + '</span></button>';
         }).join('') + '</div>' +
       '</section>' +
-      '<section class="slide notesslide" id="allNotes" style="--c:var(--orange)" hidden></section>' +
       '';
     setupLift(q);
+    setupInline();
   }
 
   var samplePromise = window.claude && window.claude.use ? window.claude.use('sample').catch(function () { return null; }) : Promise.resolve(null);
@@ -955,7 +967,7 @@ body.hasnotes .maincol { padding-bottom: 76px; }
   function turnOn(mode) {
     notesMode = mode; notesOn = true;
     document.body.classList.add('hasnotes');
-    if (panel.hidden) fab.hidden = false;
+    syncFab();
     document.getElementById('qnSub').textContent = mode === 'claude'
       ? 'Jot it down. It will wait on the right tool\'s page, saved privately to your account.'
       : 'Jot it down. It will wait on the right tool\'s page, saved in this browser.';
@@ -1002,15 +1014,19 @@ body.hasnotes .maincol { padding-bottom: 76px; }
     if (all) {
       all.hidden = !notesOn;
       if (notesOn) {
-        all.innerHTML = '<div class="noteshead"><h3>Your quick notes</h3><span>' + (NOTES.length ? NOTES.length + ' waiting. Copy one into its tool, then tick it off.' : 'Ideas, to-dos and reminders you jot down land here.') + '</span></div>';
+        document.getElementById('allCount').textContent = NOTES.length ? NOTES.length + ' waiting. Copy one into its tool, then tick it off.' : '';
+        var first = document.querySelector('#inTool option');
+        if (first) first.textContent = qnSample ? 'Let AI choose' : 'Auto-sort';
+        var list0 = document.getElementById('allList');
+        list0.innerHTML = '';
         if (!NOTES.length) {
           var e = document.createElement('p'); e.className = 'notesempty';
-          e.textContent = 'Nothing yet. Tap + Quick note at the bottom right to jot one down.';
-          all.appendChild(e);
+          e.textContent = 'Nothing yet. Your notes will show up here.';
+          list0.appendChild(e);
         } else {
           var ul0 = document.createElement('ul'); ul0.className = 'notelist';
           NOTES.slice().reverse().forEach(function (n) { ul0.appendChild(noteItem(n, true)); });
-          all.appendChild(ul0);
+          list0.appendChild(ul0);
         }
       }
     }
@@ -1044,8 +1060,8 @@ body.hasnotes .maincol { padding-bottom: 76px; }
     });
   }
 
-  function openPanel() { panel.hidden = false; fab.hidden = true; paintChips(); qnText.focus(); }
-  function closePanel() { panel.hidden = true; fab.hidden = !notesOn; fab.focus(); }
+  function openPanel() { panel.hidden = false; syncFab(); paintChips(); qnText.focus(); }
+  function closePanel() { panel.hidden = true; syncFab(); if (!fab.hidden) fab.focus(); }
 
   function aiPick(text) {
     var list = TOOLS.map(function (t) { return t.id + ': ' + t.name + ' - ' + t.short + ' ' + t.when; }).join('\n');
@@ -1059,16 +1075,16 @@ body.hasnotes .maincol { padding-bottom: 76px; }
     });
   }
 
-  function addNote() {
-    var text = qnText.value.trim();
-    if (!text) { qnText.focus(); return; }
-    if (!qnChoice) { qnMsg.textContent = 'Pick a tool for this note.'; return; }
-    qnAdd.disabled = true;
-    var noPick = { pickMsg: 'Not sure where this one goes. Pick a tool and add it again.' };
+  function submitNote(text, choice, ui) {
+    text = text.trim();
+    if (!text) { ui.focus(); return; }
+    if (!choice) { ui.msg.textContent = 'Pick a tool for this note.'; return; }
+    ui.busy(true);
+    var noPick = { pickMsg: 'Not sure where this one goes. Choose a tool and add it again.' };
     var pick;
-    if (qnChoice !== 'auto') pick = Promise.resolve(qnChoice);
+    if (choice !== 'auto') pick = Promise.resolve(choice);
     else if (qnSample) {
-      qnMsg.textContent = 'Finding the right tool...';
+      ui.msg.textContent = 'Finding the right tool...';
       pick = aiPick(text).catch(function (err) {
         if (AI_OFF.indexOf(err && err.code) >= 0) qnSample = null;
         var id = localSort(text);
@@ -1082,19 +1098,53 @@ body.hasnotes .maincol { padding-bottom: 76px; }
     pick.then(function (id) {
       return saveNote({ text: text.slice(0, 1000), tool: id, created: Date.now() }).then(function () { return id; });
     }).then(function (id) {
-      qnText.value = '';
-      qnMsg.textContent = 'Saved to ' + toolById(id).name + '. ';
+      ui.reset();
+      ui.msg.textContent = 'Saved to ' + toolById(id).name + '. ';
       var go = document.createElement('button');
       go.type = 'button'; go.textContent = 'Open';
-      go.addEventListener('click', function () { closePanel(); show(id); });
-      qnMsg.appendChild(go);
-      qnChoice = 'auto';
-      paintChips();
+      go.addEventListener('click', function () { ui.open(id); });
+      ui.msg.appendChild(go);
     }).catch(function (e) {
-      if (e && e.pickMsg) { qnChoice = null; paintChips(); qnMsg.textContent = e.pickMsg; return; }
-      qnMsg.textContent = e && e.code === 'quota_exceeded' ? 'Your notes are full. Tick some off, then try again.' : 'That note did not save. Please try again.';
-    }).then(function () { qnAdd.disabled = false; });
+      if (e && e.pickMsg) { ui.noPick(); ui.msg.textContent = e.pickMsg; return; }
+      ui.msg.textContent = e && e.code === 'quota_exceeded' ? 'Your notes are full. Tick some off, then try again.' : 'That note did not save. Please try again.';
+    }).then(function () { ui.busy(false); });
   }
+
+  function addNote() {
+    submitNote(qnText.value, qnChoice, {
+      msg: qnMsg,
+      focus: function () { qnText.focus(); },
+      busy: function (b) { qnAdd.disabled = b; },
+      reset: function () { qnText.value = ''; qnChoice = 'auto'; paintChips(); },
+      noPick: function () { qnChoice = null; paintChips(); },
+      open: function (id) { closePanel(); show(id); }
+    });
+  }
+
+  // The note box on the Today page, beside the list of notes.
+  function setupInline() {
+    var form = document.getElementById('inNote');
+    if (!form) return;
+    var input = document.getElementById('inText'), sel = document.getElementById('inTool'), btn = document.getElementById('inAdd'), msg = document.getElementById('inMsg');
+    sel.innerHTML = '';
+    [{ id: 'auto', name: qnSample ? 'Let AI choose' : 'Auto-sort' }].concat(TOOLS).forEach(function (o) {
+      var op = document.createElement('option'); op.value = o.id; op.textContent = o.name; sel.appendChild(op);
+    });
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      submitNote(input.value, sel.value, {
+        msg: msg,
+        focus: function () { input.focus(); },
+        busy: function (b) { btn.disabled = b; },
+        reset: function () { input.value = ''; sel.value = 'auto'; },
+        noPick: function () { sel.focus(); },
+        open: function (id) { show(id); }
+      });
+    });
+  }
+
+  var curPage = 'today';
+  function syncFab() { fab.hidden = !notesOn || curPage === 'today' || !panel.hidden; }
 
   fab.addEventListener('click', openPanel);
   document.getElementById('qnClose').addEventListener('click', closePanel);
@@ -1119,7 +1169,7 @@ body.hasnotes .maincol { padding-bottom: 76px; }
           if (first) { first = false; turnOn('claude'); }
           setNotes(snap.docs.map(function (d) { var x = d.data() || {}; x.id = d.id; return x; }));
         }, function () {
-          if (notesMode === 'claude') { notesOn = false; NOTES = []; useLocal(); if (!notesOn) { fab.hidden = true; panel.hidden = true; document.body.classList.remove('hasnotes'); } paintNotes(); }
+          if (notesMode === 'claude') { notesOn = false; NOTES = []; useLocal(); if (!notesOn) { panel.hidden = true; syncFab(); document.body.classList.remove('hasnotes'); } paintNotes(); }
           else if (first) { first = false; useLocal(); }
         });
       });
@@ -1153,7 +1203,8 @@ body.hasnotes .maincol { padding-bottom: 76px; }
     Array.prototype.forEach.call(nav.querySelectorAll('.nav'), function (b) {
       if (b.dataset.page === page) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
     });
-    paintNotes();
+    curPage = page; if (!panel.hidden && page === 'today') panel.hidden = true;
+    syncFab(); paintNotes();
     try { localStorage.setItem('wb-page', page); } catch (e) {}
     window.scrollTo(0, 0);
   }

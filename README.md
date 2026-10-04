@@ -39,16 +39,16 @@ Want a line that fits your day? Type what's on your mind, such as "big presentat
 
 ## Quick note
 
-Tap **+ Quick note** at the bottom right of any page to jot down a thought before it slips away. Choose **Auto-sort** and the Hub sends it to the tool where it fits, or pick a tool yourself.
+Right under Today's line, a note box sits above your list of notes. Type a thought, leave **Auto-sort** on and tap **+ Add note**. The Hub sends it to the tool where it fits, or you can pick a tool yourself.
 
-- All your notes show under **Your quick notes** on the Today page.
-- Each tool's page lists the notes waiting for it, and the sidebar shows a count.
+- Your notes appear in the list just below the box, each with the tool it belongs to.
+- On a tool's page, tap **+ Quick note** at the bottom right to add a note without going back. That page lists the notes waiting for its tool, and the sidebar shows a count.
 - Tap **Copy** to paste a note into the tool, then tick the circle when it's done.
 - Notes are saved in your own browser. Nobody else can see them, and nothing is sent anywhere.
 
 <p>
-  <a href="https://wei-wei-hu.github.io/ai-hub/"><img src="docs/preview-quick-note.png" alt="Quick note card with tool choices and an Add note button" width="49%"></a>
-  <a href="https://wei-wei-hu.github.io/ai-hub/"><img src="docs/preview-notes.png" alt="Your quick notes section on the Today page" width="49%"></a>
+  <a href="https://wei-wei-hu.github.io/ai-hub/"><img src="docs/preview-quick-note.png" alt="Quick note card on a tool page, with tool choices and an Add note button" width="49%"></a>
+  <a href="https://wei-wei-hu.github.io/ai-hub/"><img src="docs/preview-notes.png" alt="The note box and your quick notes on the Today page" width="49%"></a>
 </p>
 
 ## Full versions
