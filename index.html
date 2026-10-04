@@ -93,7 +93,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 /* Today hero */
 .hero { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; }
 .timebox { display: grid; gap: 6px; justify-items: end; text-align: right; }
-.clock { font-family: var(--head); font-weight: 800; font-size: clamp(34px, 5vw, 50px); color: var(--orange); line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: .01em; }
+.today-date { font-family: var(--head); font-weight: 800; font-size: clamp(18px, 2.4vw, 24px); color: var(--navy); line-height: 1.2; }
 .pills { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
 .pill { font-size: 12px; font-weight: 600; border-radius: 999px; padding: 3px 12px; background: var(--sunk); color: var(--navy); border: 1px solid var(--line); }
 .pill.hot { background: var(--road); color: #fff; border-color: var(--road); }
@@ -773,7 +773,7 @@ body.hasnotes .maincol { padding-bottom: 76px; }
       '<section class="slide">' + sparkle('tr') + sparkle('bl') +
         '<div class="hero"><div><div class="eyebrow">Weiwei\'s AI Hub</div><h1 class="title" style="margin-top:10px">' + greeting(now.getHours()) + ',<br>Weiwei</h1>' +
         '<p class="lede">Your AI helpers for meetings, managing, projects, planning and life, all in one place. Pick a stop and let\'s make today count.</p></div>' +
-        '<div class="timebox"><div class="clock" id="clock"></div><div style="color:var(--muted);font-size:13.5px">' + fmtDate(now) + '</div>' +
+        '<div class="timebox"><div class="today-date">' + fmtDate(now) + '</div>' +
         '<div class="pills"><span class="pill hot">Week ' + weekNo(now) + '</span><span class="pill">' + left + '</span></div></div></div>' +
       '</section>' +
       '<section class="slide quote"><span class="dot">' + svg('quote') + '</span><div><div class="eyebrow" id="lineLabel">Today\'s line</div><p id="lineText">' + esc(q) + '</p><p class="liftwhy" id="liftWhy" aria-live="polite"></p>' +
@@ -786,9 +786,6 @@ body.hasnotes .maincol { padding-bottom: 76px; }
       '</section>' +
       '<section class="slide notesslide" id="allNotes" style="--c:var(--orange)" hidden></section>' +
       '';
-    var tick = function () { var el = document.getElementById('clock'); if (el) el.textContent = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' }); };
-    tick();
-    timer = setInterval(tick, 1000);
     setupLift(q);
   }
 
