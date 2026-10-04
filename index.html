@@ -250,6 +250,13 @@ body.hasnotes .maincol { padding-bottom: 76px; }
 }
 .notetag { border: 0; background: none; padding: 0; font: inherit; font-size: 12px; font-weight: 600; color: var(--c); cursor: pointer; }
 .notetag:hover { text-decoration: underline; }
+.byline { display: flex; justify-content: flex-end; max-width: 1100px; box-sizing: border-box; padding: 18px clamp(16px, 4vw, 44px) 0; }
+.byline a { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: var(--muted); font-size: 13px; background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px 6px 12px; box-shadow: var(--shadow); }
+.byline a svg { color: #0A66C2; }
+.byline a b { color: var(--navy); font-weight: 700; }
+.byline a i { font-style: normal; color: var(--orange); font-weight: 700; }
+.byline a:hover { border-color: var(--orange); }
+.byline + .main { padding-top: 14px; }
 @media (prefers-reduced-motion: reduce) { .stop circle.ring { transition: none; } }
 </style>
 
@@ -268,6 +275,7 @@ body.hasnotes .maincol { padding-bottom: 76px; }
   </aside>
 
   <div class="maincol">
+  <div class="byline"><a href="https://www.linkedin.com/in/weiweihu/" target="_blank" rel="noopener" title="Weiwei Hu on LinkedIn"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.75h4v11H3v-11Zm6.5 0h3.8v1.5h.06c.53-1 1.83-1.8 3.76-1.8 4 0 4.88 2.4 4.88 5.6v5.7h-4v-5.05c0-1.2-.02-2.75-1.7-2.75-1.7 0-1.95 1.3-1.95 2.66v5.14h-4v-11Z"/></svg>Designed by <b>Weiwei Hu</b><i aria-hidden="true">↗</i></a></div>
   <main class="main" id="main" aria-live="polite"></main>
     <footer class="sitefoot"><span>&copy; 2026 Weiwei Hu. All rights reserved.</span><a class="libtn" href="https://www.linkedin.com/in/weiweihu/" target="_blank" rel="noopener"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true" fill="#0A66C2"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.75h4v11H3v-11Zm6.5 0h3.8v1.5h.06c.53-1 1.83-1.8 3.76-1.8 4 0 4.88 2.4 4.88 5.6v5.7h-4v-5.05c0-1.2-.02-2.75-1.7-2.75-1.7 0-1.95 1.3-1.95 2.66v5.14h-4v-11Z"/></svg>LinkedIn</a></footer>
   </div>
