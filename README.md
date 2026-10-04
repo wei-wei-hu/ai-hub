@@ -58,4 +58,8 @@ The full versions of the tools are **invite only**. To learn more, visit [Weiwei
 - Live page: https://wei-wei-hu.github.io/ai-hub/
 - LinkedIn: https://www.linkedin.com/in/weiweihu/
 
+## License
+
+This repository is **proprietary**. It is not open source. You may view the code and use the live page for personal, non-commercial use. Copying, changing, reusing, hosting, selling, or using any part of it to train AI requires written permission from Weiwei Hu. See [LICENSE](LICENSE) for the full terms.
+
 © 2026 Weiwei Hu. All rights reserved.
