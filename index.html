@@ -1,0 +1,1051 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Weiwei's AI Hub: one home page for five AI tools for meetings, managing, projects, planning and life.">
+<meta property="og:title" content="Weiwei's AI Hub">
+<meta property="og:description" content="Five AI tools for meetings, managing, projects, planning and life, in one place.">
+<meta property="og:image" content="https://wei-wei-hu.github.io/ai-hub/docs/preview-laptop.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='12' fill='%231e2b4d'/%3E%3Cpath d='M12 5l1.5 4 4 1.4-4 1.2L12 16l-1.5-4.4-4-1.2 4-1.4z' fill='%23f08a3c'/%3E%3C/svg%3E">
+<style>*,*::before,*::after{box-sizing:border-box}html,body{margin:0;padding:0}</style>
+<title>Weiwei's AI Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&display=swap">
+</head>
+<body>
+<style>
+/* Layout: infographic-template style. White sidebar of tools; main panel on a pale blue-grey slide ground.
+   Today = big uppercase greeting + a winding navy road with one stop per tool, numbered 01–05.
+   Tool page = big white circle title beside numbered steps with icon circles, navy Open pill with an orange arrow. */
+:root {
+  --ground: #eef1f7;
+  --side: #ffffff;
+  --card: #ffffff;
+  --sunk: #f5f7fb;
+  --navy: #1e2b4d;
+  --ink: #1e2b4d;
+  --muted: #66718a;
+  --line: #dfe4ee;
+  --road: #1e2b4d;
+  --orange: #f08a3c;
+  --yellow: #f2b632;
+  --teal: #3e9aae;
+  --blue: #3b6fb6;
+  --sky: #6aa3d8;
+  --sparkle: #cfe2f3;
+  --on-color: #ffffff;
+  --shadow: 0 2px 4px rgba(30,43,77,.05), 0 12px 28px -14px rgba(30,43,77,.25);
+  --head: "Montserrat", "Poppins", system-ui, sans-serif;
+  --body: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #111726; --side: #161d2f; --card: #1a2236; --sunk: #20293f; --navy: #e8edf7; --ink: #e8edf7;
+    --muted: #9ba6bf; --line: #2a3450; --road: #31416b; --sparkle: #22324f; --on-color: #ffffff;
+    --shadow: 0 2px 4px rgba(0,0,0,.3), 0 12px 28px -14px rgba(0,0,0,.7); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #111726; --side: #161d2f; --card: #1a2236; --sunk: #20293f; --navy: #e8edf7; --ink: #e8edf7;
+  --muted: #9ba6bf; --line: #2a3450; --road: #31416b; --sparkle: #22324f; --on-color: #ffffff;
+  --shadow: 0 2px 4px rgba(0,0,0,.3), 0 12px 28px -14px rgba(0,0,0,.7); color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body { background: var(--ground); color: var(--ink); font-family: var(--body); font-size: 14.5px; line-height: 1.6; }
+h1, h2, h3 { font-family: var(--head); margin: 0; color: var(--navy); text-wrap: balance; }
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; }
+
+.app { display: grid; grid-template-columns: 250px minmax(0, 1fr); min-height: 100%; }
+
+/* Sidebar */
+.side { background: var(--side); border-right: 1px solid var(--line); padding: 26px 14px; display: flex; flex-direction: column; gap: 22px; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+.brand { display: flex; gap: 12px; align-items: center; padding: 0 8px; }
+.logo { width: 44px; height: 44px; border-radius: 50%; background: var(--road); display: grid; place-items: center; flex: none; position: relative; }
+.logo::after { content: ""; position: absolute; right: -2px; top: -2px; width: 14px; height: 14px; border-radius: 50%; background: var(--orange); border: 3px solid var(--side); }
+.logo svg { width: 22px; height: 22px; color: #fff; }
+.brand b { font-family: var(--head); font-weight: 800; font-size: 16px; display: block; line-height: 1.2; color: var(--navy); }
+.brand span { font-size: 12px; color: var(--muted); }
+.navgroup { display: grid; gap: 4px; }
+.navlabel { font-family: var(--head); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding: 0 10px 6px; }
+.nav { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; border: 0; background: none; padding: 8px 10px; border-radius: 12px; font-size: 14px; font-weight: 500; }
+.nav:hover { background: var(--sunk); }
+.nav[aria-current="page"] { background: var(--sunk); color: var(--navy); font-weight: 600; box-shadow: inset 3px 0 0 var(--c); }
+.dot { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; flex: none; background: var(--c); color: var(--on-color); }
+.dot svg { width: 16px; height: 16px; }
+.side-foot { margin-top: auto; font-size: 12px; color: var(--muted); padding: 0 10px; }
+
+/* Main */
+.main { padding: 30px clamp(16px, 4vw, 44px) 56px; display: grid; gap: 22px; align-content: start; min-width: 0; max-width: 1100px; }
+.slide { background: var(--card); border-radius: 6px; padding: clamp(20px, 3.6vw, 36px); box-shadow: var(--shadow); position: relative; overflow: hidden; min-width: 0; }
+.slide > * { position: relative; }
+.sparkle { position: absolute !important; width: 90px; height: 90px; color: var(--sparkle); pointer-events: none; }
+.sparkle.tr { right: 34px; top: -18px; }
+.sparkle.bl { left: 48px; bottom: -40px; width: 110px; height: 110px; }
+.eyebrow { font-family: var(--head); font-size: 11.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.title { font-weight: 800; text-transform: uppercase; font-size: clamp(28px, 4.6vw, 46px); line-height: 1.04; letter-spacing: -.01em; }
+.lede { margin: 12px 0 0; color: var(--muted); max-width: 52ch; }
+
+/* Today hero */
+.hero { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; }
+.timebox { display: grid; gap: 6px; justify-items: end; text-align: right; }
+.clock { font-family: var(--head); font-weight: 800; font-size: clamp(34px, 5vw, 50px); color: var(--orange); line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: .01em; }
+.pills { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.pill { font-size: 12px; font-weight: 600; border-radius: 999px; padding: 3px 12px; background: var(--sunk); color: var(--navy); border: 1px solid var(--line); }
+.pill.hot { background: var(--road); color: #fff; border-color: var(--road); }
+
+/* Road */
+.roadhead { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.roadhead h2 { font-weight: 800; text-transform: uppercase; font-size: clamp(20px, 2.6vw, 26px); }
+.roadhead span { font-size: 13px; color: var(--muted); }
+.roadwrap { margin: 18px -8px 0; }
+.roadwrap > svg { display: block; width: 100%; height: auto; overflow: visible; }
+.stop { cursor: pointer; }
+.stop circle.ring { transition: r .15s; }
+.stop:hover circle.ring, .stop:focus-visible circle.ring { r: 34; }
+.stop:focus { outline: none; }
+.stops { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; margin-top: 10px; }
+.stopcard { border: 0; background: none; text-align: left; padding: 0; display: grid; gap: 4px; align-content: start; }
+.stopcard .num { font-family: var(--head); font-weight: 800; font-size: 26px; color: var(--c); line-height: 1; }
+.stopcard b { font-family: var(--head); font-weight: 700; font-size: 14px; color: var(--navy); }
+.stopcard span { font-size: 12.5px; color: var(--muted); line-height: 1.45; }
+.stopcard:hover b { color: var(--c); }
+
+.quote { display: grid; grid-template-columns: 54px minmax(0, 1fr); gap: 18px; align-items: center; }
+.quote .dot { width: 54px; height: 54px; --c: var(--yellow); }
+.quote .dot svg { width: 24px; height: 24px; }
+.quote p { margin: 4px 0 0; font-family: var(--head); font-weight: 700; font-size: clamp(17px, 2.2vw, 21px); color: var(--navy); }
+.lift { margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--line); }
+.lift[hidden] { display: none; }
+.lift label { display: block; font-family: var(--head); font-weight: 700; font-size: 14px; color: var(--navy); margin-bottom: 8px; }
+.liftrow { display: flex; gap: 8px; flex-wrap: wrap; }
+.liftrow input { flex: 1 1 220px; min-width: 0; font: inherit; font-size: 14.5px; color: var(--ink); background: var(--sunk); border: 2px solid transparent; border-radius: 999px; padding: 10px 18px; }
+.liftrow input:focus { outline: none; border-color: var(--orange); }
+.liftbtn { font-family: var(--head); font-weight: 700; font-size: 14px; color: #fff; background: var(--orange); border: 0; border-radius: 999px; padding: 10px 20px; cursor: pointer; }
+.liftbtn:hover { filter: brightness(1.08); }
+.liftbtn:disabled { opacity: .6; cursor: default; }
+.quote p.liftwhy { margin: 10px 0 0; font-family: var(--body); font-weight: 400; font-size: 14px; color: var(--muted); }
+.quote .dot { align-self: start; }
+.quote p.liftwhy:empty { display: none; }
+.liftreset { margin-left: 4px; background: none; border: 0; padding: 0; font: inherit; font-size: 13.5px; color: var(--orange); text-decoration: underline; cursor: pointer; }
+
+/* Tool page */
+.toolslide { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: clamp(20px, 4vw, 48px); align-items: center; }
+.bigcircle { aspect-ratio: 1; max-width: 300px; width: 100%; border-radius: 50%; background: var(--card); box-shadow: 0 10px 30px -10px rgba(30,43,77,.28), 0 0 0 10px var(--sunk); display: grid; place-items: center; text-align: center; padding: 34px; }
+.bigcircle .dot { width: 56px; height: 56px; margin: 0 auto 10px; }
+.bigcircle .dot svg { width: 26px; height: 26px; }
+.bigcircle h1 { font-weight: 800; font-size: clamp(19px, 2.4vw, 24px); line-height: 1.15; }
+.bigcircle p { margin: 8px 0 0; font-size: 12.5px; color: var(--muted); }
+.zone { display: block; font-family: var(--head); font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--c); margin-bottom: 6px; }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+.steps li { display: grid; grid-template-columns: 52px 50px minmax(0, 1fr); gap: 14px; align-items: center; }
+.steps li:nth-child(2) { margin-left: 34px; }
+.steps .dot { width: 52px; height: 52px; box-shadow: 0 0 0 6px var(--card), 0 0 0 7px var(--line); }
+.steps .dot svg { width: 22px; height: 22px; }
+.steps .num { font-family: var(--head); font-weight: 800; font-size: 28px; color: var(--navy); }
+.steps b { display: block; font-family: var(--head); font-weight: 700; font-size: 14.5px; color: var(--navy); }
+.steps span { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.lede.tool { margin-bottom: 22px; }
+
+.duo { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 22px; }
+.openslide { display: flex; flex-direction: column; justify-content: center; gap: 12px; }
+.openbtn { display: inline-flex; align-items: center; gap: 12px; align-self: flex-start; text-decoration: none; background: var(--road); color: #fff; font-family: var(--head); font-weight: 700; font-size: 15px; padding: 10px 10px 10px 22px; border-radius: 999px; }
+.openbtn i { width: 32px; height: 32px; border-radius: 50%; background: var(--orange); display: grid; place-items: center; font-style: normal; font-size: 15px; }
+.openbtn:hover { filter: brightness(1.12); }
+.btnrow { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.samplebtn { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: var(--navy); background: var(--card); border: 2px solid var(--navy); font-family: var(--head); font-weight: 700; font-size: 15px; padding: 8px 8px 8px 20px; border-radius: 999px; }
+.samplebtn i { width: 30px; height: 30px; border-radius: 50%; background: var(--sunk); display: grid; place-items: center; font-style: normal; font-size: 15px; }
+.samplebtn:hover { border-color: var(--orange); color: var(--orange); }
+.openbtn { flex-wrap: wrap; }
+.lock { align-self: flex-start; display: inline-flex; align-items: center; gap: 7px; font-family: var(--head); font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--navy); text-decoration: none; background: var(--sunk); border: 1.5px solid var(--navy); border-radius: 999px; padding: 6px 14px 6px 11px; }
+.lock:hover { border-color: var(--orange); color: var(--orange); }
+.lock svg { width: 14px; height: 14px; }
+.openslide small { color: var(--muted); font-size: 12.5px; }
+.prevlink { align-self: flex-start; font-size: 13px; font-weight: 600; color: var(--blue); text-decoration: none; border-bottom: 1.5px solid currentColor; }
+.prevlink:hover { color: var(--orange); }
+.whenslide { border-top: 6px solid var(--yellow); }
+.whenslide h3 { font-weight: 800; text-transform: uppercase; font-size: 15px; letter-spacing: .02em; }
+.whenslide p { margin: 8px 0 0; }
+
+.maincol { min-width: 0; display: flex; flex-direction: column; }
+.sitefoot { margin: 0 clamp(16px, 4vw, 44px) 32px; max-width: 1100px; box-sizing: border-box; padding: 16px 20px; border-radius: 14px; background: #1e2b4d; color: #fff; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 18px; font-size: 13.5px; text-align: center; }
+.libtn { display: inline-flex; align-items: center; gap: 7px; padding: 7px 15px; border-radius: 999px; background: #fff; color: #1e2b4d; font-family: var(--head); font-weight: 700; text-decoration: none; }
+.libtn:hover { background: var(--orange); color: #fff; }
+.libtn:hover svg { fill: #fff; }
+/* Narrow screens */
+@media (max-width: 900px) {
+  .toolslide, .duo { grid-template-columns: minmax(0, 1fr); }
+  .bigcircle { max-width: 250px; margin: 0 auto; }
+  .steps li:nth-child(2) { margin-left: 0; }
+}
+@media (max-width: 820px) {
+  .app { grid-template-columns: minmax(0, 1fr); }
+  .side { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; height: auto; flex-direction: row; align-items: center; padding: 10px 16px; gap: 10px; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+  .brand b, .brand span, .navlabel, .side-foot { display: none; }
+  .logo { width: 36px; height: 36px; }
+  .navgroup { display: flex; gap: 4px; }
+  .nav { white-space: nowrap; padding: 5px 10px 5px 5px; font-size: 13.5px; }
+  .dot { width: 28px; height: 28px; }
+  .main { padding-top: 20px; }
+  .timebox { justify-items: start; text-align: left; }
+  .pills { justify-content: flex-start; }
+}
+@media (max-width: 640px) {
+  .roadwrap { display: none; }
+  .stops { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .stopcard { grid-template-columns: 44px minmax(0, 1fr); column-gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); }
+  .stopcard:first-child { border-top: 0; }
+  .stopcard .num { grid-row: span 2; font-size: 24px; }
+  .steps li { grid-template-columns: 46px 40px minmax(0, 1fr); gap: 10px; }
+  .steps .dot { width: 46px; height: 46px; }
+  .steps .num { font-size: 22px; }
+}
+.navcount { margin-left: auto; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: var(--orange); color: #fff; font-size: 11.5px; font-weight: 700; display: inline-grid; place-items: center; }
+.navcount[hidden] { display: none; }
+.stopcard b .navcount { margin-left: 6px; vertical-align: 1px; }
+body.hasnotes .maincol { padding-bottom: 76px; }
+.qnfab { position: fixed; right: 20px; bottom: 20px; z-index: 40; display: inline-flex; align-items: center; gap: 10px; border: 0; cursor: pointer; background: #1e2b4d; color: #fff; font-family: var(--head); font-weight: 700; font-size: 14.5px; padding: 8px 18px 8px 8px; border-radius: 999px; box-shadow: 0 10px 28px -10px rgba(30,43,77,.55); }
+.qnfab i { width: 34px; height: 34px; border-radius: 50%; background: var(--orange); display: grid; place-items: center; font-style: normal; font-size: 22px; line-height: 1; }
+.qnfab:hover { filter: brightness(1.12); }
+.qnfab[hidden], .qnpanel[hidden] { display: none; }
+.qnpanel { position: fixed; right: 20px; bottom: 20px; z-index: 41; width: min(400px, calc(100vw - 32px)); box-sizing: border-box; padding: 20px; border-radius: 22px; background: color-mix(in srgb, var(--card) 80%, transparent); -webkit-backdrop-filter: blur(18px) saturate(1.3); backdrop-filter: blur(18px) saturate(1.3); border: 1px solid color-mix(in srgb, var(--card) 60%, var(--line)); box-shadow: 0 24px 60px -20px rgba(30,43,77,.45); }
+.qnhead { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.qnhead h2 { margin: 0; font-family: var(--head); font-weight: 800; font-size: 18px; color: var(--navy); }
+.qnclose { width: 32px; height: 32px; border-radius: 50%; border: 0; background: var(--sunk); color: var(--navy); font-size: 18px; cursor: pointer; }
+.qnsub { margin: 4px 0 12px; font-size: 13px; color: var(--muted); }
+.qnpanel textarea { width: 100%; box-sizing: border-box; min-height: 96px; resize: vertical; font: inherit; font-size: 15px; color: var(--ink); background: color-mix(in srgb, var(--card) 70%, transparent); border: 2px solid var(--line); border-radius: 16px; padding: 12px 14px; }
+.qnpanel textarea:focus { outline: none; border-color: var(--orange); }
+.qnlabel { margin: 12px 0 6px; font-family: var(--head); font-weight: 700; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.qnchips { display: flex; flex-wrap: wrap; gap: 6px; }
+.qnchip { display: inline-flex; align-items: center; gap: 6px; border: 1.5px solid var(--line); background: var(--card); color: var(--navy); border-radius: 999px; padding: 5px 11px; font: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer; }
+.qnchip::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--c, var(--orange)); }
+.qnchip[aria-pressed="true"] { background: #1e2b4d; border-color: #1e2b4d; color: #fff; }
+.qnadd { margin-top: 14px; width: 100%; display: flex; align-items: center; gap: 10px; border: 0; cursor: pointer; background: var(--sparkle); color: var(--navy); font-family: var(--head); font-weight: 700; font-size: 15px; padding: 12px 18px; border-radius: 999px; }
+.qnadd b { font-size: 20px; line-height: 1; color: var(--orange); }
+.qnadd:hover { filter: brightness(.97); }
+.qnadd:disabled { opacity: .6; cursor: default; }
+.qnmsg { margin: 10px 0 0; font-size: 13.5px; color: var(--muted); min-height: 1em; }
+.qnmsg button { background: none; border: 0; padding: 0; font: inherit; color: var(--orange); text-decoration: underline; cursor: pointer; }
+.notesslide { border-top: 6px solid var(--c, var(--orange)); }
+.notesslide[hidden] { display: none; }
+.noteshead { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 14px; }
+.noteshead h3 { margin: 0; font-weight: 800; text-transform: uppercase; font-size: 15px; letter-spacing: .02em; }
+.noteshead span { font-size: 13px; color: var(--muted); }
+.notelist { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; }
+.notelist li { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 12px; align-items: start; padding: 12px 14px; border-radius: 14px; background: var(--sunk); }
+.notecheck { width: 24px; height: 24px; margin-top: 1px; border-radius: 50%; border: 2px solid var(--muted); background: none; cursor: pointer; padding: 0; }
+.notecheck:hover { border-color: var(--orange); background: color-mix(in srgb, var(--orange) 18%, transparent); }
+.notetext { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--ink); font-size: 14.5px; }
+.notetext small { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; }
+.notecopy { border: 1.5px solid var(--line); background: var(--card); color: var(--navy); border-radius: 999px; padding: 4px 12px; font: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer; }
+.notecopy:hover { border-color: var(--orange); color: var(--orange); }
+.notesempty { margin: 10px 0 0; color: var(--muted); font-size: 14px; }
+@media (max-width: 640px) {
+  .qnfab { right: 16px; bottom: 16px; }
+  .qnpanel { right: 16px; bottom: 16px; }
+}
+@media (prefers-reduced-motion: reduce) { .stop circle.ring { transition: none; } }
+</style>
+
+<div class="app">
+  <aside class="side" aria-label="Tools">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.6L18 9l-4.2 1.4L12 15l-1.8-4.6L6 9l4.2-1.4z"/><path d="M18 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg></div>
+      <div><b>Weiwei's AI Hub</b><span>Work · Life · Teams</span></div>
+    </div>
+    <nav class="navgroup" id="nav">
+      <div class="navlabel">Home</div>
+      <button class="nav" data-page="today" style="--c:var(--road)"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span>Today</button>
+      <div class="navlabel" style="margin-top:14px">My tools</div>
+    </nav>
+    <div class="side-foot">5 tools · full versions are invite only</div>
+  </aside>
+
+  <div class="maincol">
+  <main class="main" id="main" aria-live="polite"></main>
+    <footer class="sitefoot"><span>&copy; 2026 Weiwei Hu. All rights reserved.</span><a class="libtn" href="https://www.linkedin.com/in/weiweihu/" target="_blank" rel="noopener"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true" fill="#0A66C2"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.75h4v11H3v-11Zm6.5 0h3.8v1.5h.06c.53-1 1.83-1.8 3.76-1.8 4 0 4.88 2.4 4.88 5.6v5.7h-4v-5.05c0-1.2-.02-2.75-1.7-2.75-1.7 0-1.95 1.3-1.95 2.66v5.14h-4v-11Z"/></svg>LinkedIn</a></footer>
+  </div>
+</div>
+
+<button class="qnfab" id="qnFab" type="button" hidden aria-haspopup="dialog"><i aria-hidden="true">+</i>Quick note</button>
+<div class="qnpanel" id="qnPanel" role="dialog" aria-modal="false" aria-labelledby="qnTitle" hidden>
+  <div class="qnhead"><h2 id="qnTitle">Quick note</h2><button class="qnclose" id="qnClose" type="button" aria-label="Close">&times;</button></div>
+  <p class="qnsub">Jot it down. It will wait on the right tool's page.</p>
+  <textarea id="qnText" maxlength="1000" placeholder="e.g. Ask Lin for the vendor quote by Friday"></textarea>
+  <div class="qnlabel">Send to</div>
+  <div class="qnchips" id="qnChips"></div>
+  <button class="qnadd" id="qnAdd" type="button"><b aria-hidden="true">+</b>Add note</button>
+  <p class="qnmsg" id="qnMsg" aria-live="polite"></p>
+</div>
+<script>
+(function () {
+  var I = {
+    minutes: '<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h4"/>',
+    playbook: '<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M9 8h6"/>',
+    board: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M15 4v16"/>',
+    planner: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M8 14h3"/>',
+    life: '<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
+    target: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/>',
+    chat: '<path d="M4 5h16v11H9l-5 4z"/><path d="M8 10h8"/>',
+    check: '<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 10"/>',
+    chart: '<path d="M4 20V4M4 20h16"/><path d="M8 15l4-4 3 3 5-6"/>',
+    flag: '<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>',
+    users: '<circle cx="9" cy="8" r="3.2"/><path d="M3 20c.8-3.4 3.2-5 6-5s5.2 1.6 6 5"/><circle cx="17" cy="9" r="2.4"/><path d="M16 14.2c2.4.2 4.2 1.8 5 4.8"/>',
+    route: '<circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M8.5 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.5"/>',
+    heart: '<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',
+    star: '<path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/>',
+    spark: '<path d="M12 3l1.8 4.6L18 9l-4.2 1.4L12 15l-1.8-4.6L6 9l4.2-1.4z"/><path d="M18 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>',
+    quote: '<path d="M6 17c-1.5 0-2.5-1.2-2.5-3 0-3.5 2-6.4 5-7.5M15 17c-1.5 0-2.5-1.2-2.5-3 0-3.5 2-6.4 5-7.5"/><circle cx="6.2" cy="14.2" r="2.6"/><circle cx="15.2" cy="14.2" r="2.6"/>'
+  };
+  var TOOLS = [
+    { id: 'minutes', name: 'Minutes to Actions', zone: 'Collect', c: 'var(--orange)',
+      short: 'Meeting notes in, minutes and action items out.',
+      lede: 'A seven-step meeting routine. Plan the meeting beforehand, then paste your notes afterward and get English minutes your team can act on the same day.',
+      what: [
+        ['target', 'Before the meeting', 'Write the goal in one sentence, list who attends, run the five-question check and copy an invite or run sheet.'],
+        ['spark', 'After the meeting', 'Paste your notes in any language. AI marks decisions, owners, deadlines and open questions, with line numbers back to your notes.'],
+        ['flag', 'Follow up', 'Get a one-page brief of five points or fewer, plus checkpoints to send within 24 hours.']
+      ],
+      when: 'Right after any meeting where something was decided.' },
+    { id: 'playbook', name: 'Manager Playbook', sample: 'https://wei-wei-hu.github.io/manager-playbook/', zone: 'Work on', c: 'var(--teal)',
+      short: '1:1s, feedback and weekly reports.',
+      lede: 'A pocket coach for managers. Describe a situation and get a framework and the words to say, or turn the week\'s notes into a report.',
+      what: [
+        ['chat', 'Plan a situation', '1:1s, feedback and meetings. Get a framework, what to say and questions to ask.'],
+        ['chart', 'Weekly report', 'Paste messy notes and get a report, a short talk or the questions people are likely to ask.'],
+        ['star', 'Your recent plans', 'Open anything you made before, or the ones you starred.']
+      ],
+      when: 'Before a 1:1, a hard conversation or your weekly report.' },
+    { id: 'board', name: 'Program Status Board', zone: 'Keep', c: 'var(--blue)',
+      short: 'Projects, milestones and the weekly update.',
+      lede: 'Describe a project in your own words. The board turns it into milestones and a weekly plan, keeps a record of what got done, and writes an update that sticks to the facts.',
+      what: [
+        ['route', 'Plan & track', 'Plan with AI, tick off tasks and mark milestones done. Each project shows red, yellow or green.'],
+        ['check', 'Weekly record', 'One row per task: progress, evidence, blocker and next step.'],
+        ['flag', 'Weekly update', 'A draft from your record, three checks before you send, then copy as text or a formatted report.']
+      ],
+      when: 'Through the week, and on Friday for the update.' },
+    { id: 'planner', name: 'The Weekly Planner', sample: 'https://wei-wei-hu.github.io/the-weekly-planner/', zone: 'Set out', c: 'var(--sky)',
+      short: 'The week ahead, by person and project.',
+      lede: 'Lay out the week: goals, milestones day by day and tasks for each person, so Monday starts with a plan already in place.',
+      what: [
+        ['target', 'Goals for the week', 'A short list of what matters, with dates and a tick when done.'],
+        ['route', 'Milestones of the week', 'Each day\'s milestones and tasks on one timeline.'],
+        ['users', 'Tasks by person', 'Who owns what, with status, filters and export.']
+      ],
+      when: 'Sunday evening or Monday morning.' },
+    { id: 'life', name: 'Life Designer Pro', sample: 'https://wei-wei-hu.github.io/life-designer-pro/', zone: 'Life', c: 'var(--yellow)',
+      short: 'Your whole life on one page.',
+      lede: 'Rate the eight areas of your life, find the question that really matters, sketch three possible futures and pick one small thing to try this week.',
+      what: [
+        ['heart', 'The eight areas today', 'Score well-being, work, love, fun, learning, community, money and meaning from 0 to 10, then name the one that needs you most.'],
+        ['route', 'Three paths', 'Keep going, a different road, and what you would do with no one watching. Each one described as an ordinary day.'],
+        ['spark', 'Your next small test', 'One thing to try this week, what you protect no matter what, and how often you will check back in.']
+      ],
+      when: 'Once a month or once a season, or whenever a big choice comes up.' }
+  ];
+  var QUOTES = [
+  "Small steps every day add up to big results.",
+  "Decide what matters, then protect time for it.",
+  "A clear next step is worth more than a perfect plan.",
+  "Write it down, and your mind is free to think.",
+  "Good questions open better conversations.",
+  "Finish one thing well before starting the next.",
+  "Start where you are and use what you have.",
+  "The first draft only needs to exist.",
+  "You can do a lot, one thing at a time.",
+  "Every expert you admire was once a beginner who kept going.",
+  "Ask for help early. It saves everyone time.",
+  "Rest is part of the work.",
+  "A short walk can solve a long problem.",
+  "Listen until you could explain their view as well as they can.",
+  "Celebrate the small wins; they fuel the big ones.",
+  "Today is a good day to learn one new thing.",
+  "Courage often looks like sending the email.",
+  "Make it simple enough that you will actually do it.",
+  "Kind words cost nothing and travel far.",
+  "Your future self will thank you for the hour you invest today.",
+  "Done with care beats perfect and late.",
+  "Be curious before you are certain.",
+  "One honest conversation can save a month of guessing.",
+  "Leave every meeting with a decision, an owner and a date.",
+  "Energy is a resource. Spend it on what matters.",
+  "The best time to plan tomorrow is before you leave today.",
+  "Progress you can see keeps you going.",
+  "Say thank you more often than you think you need to.",
+  "Try it small, learn fast, then grow it.",
+  "A calm mind makes better decisions.",
+  "What you practice daily, you become.",
+  "Saying no to one thing makes room for another.",
+  "Clear writing comes from clear thinking.",
+  "Trust is built in small moments: kept promises and honest updates.",
+  "Let your work be generous.",
+  "When you feel stuck, shrink the task.",
+  "Your pace is your own. Keep moving.",
+  "Notice what gives you energy and do more of it.",
+  "Give credit freely; it multiplies.",
+  "Good leaders make others feel capable.",
+  "Ask yourself what would make this easier.",
+  "Every setback carries a lesson if you look for it.",
+  "A tidy desk invites a focused hour.",
+  "Learn from people who think differently from you.",
+  "Show your work early. Feedback is a gift.",
+  "Big goals become real when they meet a calendar.",
+  "Breathe. Then choose your next move.",
+  "The right question is worth more than a fast answer.",
+  "Make room for joy on an ordinary Tuesday.",
+  "Be the person who follows up.",
+  "Your attention is precious. Spend it on purpose.",
+  "Growth often feels uncomfortable at first.",
+  "Help one person today without being asked.",
+  "Plans are good guesses; adjust them gladly.",
+  "Simple tools used well beat clever tools left unused.",
+  "Begin before you feel ready.",
+  "The work you are proud of started as a messy draft.",
+  "Patience and persistence make a powerful pair.",
+  "Hard conversations get easier with kindness and facts.",
+  "Every day is a chance to be a little better than yesterday.",
+  "Ideas grow when you share them.",
+  "AI can draft; you decide what matters.",
+  "Use technology to give yourself more time to think.",
+  "A good prompt is a clear request. Practice asking well.",
+  "Let AI handle the repetitive parts so you can do the human parts.",
+  "Check the facts before you share the story.",
+  "Learning a new tool is an investment in your future self.",
+  "Stay curious about what AI can do and thoughtful about what it should do.",
+  "The best results come from people and tools working together.",
+  "Teach what you learn; it doubles your understanding.",
+  "Rest your eyes, stretch your legs, then come back stronger.",
+  "Ask yourself what success looks like by Friday.",
+  "Write the goal in one sentence before you begin.",
+  "A plan you can explain is a plan you can follow.",
+  "Your team watches how you handle pressure.",
+  "Lead with questions, then with answers.",
+  "Make the next step obvious.",
+  "Small improvements, repeated, become remarkable results.",
+  "You have handled hard days before. You can handle this one.",
+  "Gratitude turns what you have into enough.",
+  "Put the most important task first while your mind is fresh.",
+  "Respond thoughtfully; few things need an instant reply.",
+  "Make time for the people who make time for you.",
+  "Leave a place a little better than you found it.",
+  "Strong teams speak up early.",
+  "The quickest way through a hard task is to start it.",
+  "Write down three wins before you close your laptop.",
+  "What you measure gets attention. Choose with care.",
+  "Be generous with your knowledge.",
+  "A good day starts the night before, with a plan and good sleep.",
+  "Feedback is information. Keep what helps.",
+  "Every no brings you closer to the right yes.",
+  "Stay open. The best idea may come from someone unexpected.",
+  "Give your full attention to one thing at a time.",
+  "Effort counts, even when results take longer.",
+  "Ask what we learned before asking who is to blame.",
+  "Make your work easy for others to build on.",
+  "Every expert keeps learning.",
+  "Your story is still being written. Make today a good page.",
+  "Choose progress over polish when time is short.",
+  "A five-minute plan saves an hour of confusion.",
+  "Find the one thing that would make everything else easier.",
+  "Speak up for the quiet voices in the room.",
+  "When in doubt, simplify.",
+  "Small acts of kindness make long workdays lighter.",
+  "Hope grows when you take action.",
+  "You can rewrite the plan and keep the goal.",
+  "Find the lesson, then let the mistake go.",
+  "Be specific about what you need. People want to help.",
+  "Momentum loves a clear first step.",
+  "Make decisions with the best information you have today.",
+  "Your values are your compass on uncertain days.",
+  "Protect your mornings for deep work.",
+  "Good news grows when you share it.",
+  "Be kind to your future self: name your files well.",
+  "Choose one thing to get really good at this month.",
+  "Doing less, better, often achieves more.",
+  "Reach out to someone you have not spoken to in a while.",
+  "Confidence grows from keeping promises to yourself.",
+  "Every ending makes space for a new beginning.",
+  "Ask for the outcome you want, out loud.",
+  "Two minutes of preparation can change a whole meeting.",
+  "Strong opinions, gently held, help teams think.",
+  "The skills you build today open doors tomorrow.",
+  "When the path is uncertain, take the next small step.",
+  "Make it easy to say yes to your idea.",
+  "Joy is worth scheduling.",
+  "Reflection turns experience into wisdom.",
+  "People remember how you made them feel.",
+  "Turn one big question into three small ones.",
+  "Your best work comes from a rested mind.",
+  "Keep a list of what is going well.",
+  "A good manager removes obstacles.",
+  "Ask the person doing the work how to improve it.",
+  "Write the email you would want to receive.",
+  "Make room in your week for thinking.",
+  "Learn the basics deeply; they carry you far.",
+  "Celebrate effort as well as outcomes.",
+  "Be honest about what you do not know yet.",
+  "Every conversation is a chance to build trust.",
+  "Your calendar shows your priorities. Check that it agrees with you.",
+  "Start the day with intention and end it with gratitude.",
+  "Good questions turn problems into projects.",
+  "Look for the possibility first.",
+  "Ask what the other person needs from you.",
+  "One focused hour can outdo a scattered day.",
+  "Courage is acting with fear walking beside you.",
+  "Make your goals visible.",
+  "Work feels lighter when it is shared.",
+  "Today, notice one thing you would normally rush past.",
+  "The way you open a meeting sets its tone.",
+  "Use plain words. They travel further.",
+  "Growth begins at the edge of your comfort zone.",
+  "A good plan leaves room for surprises.",
+  "Thank the people whose work makes yours possible.",
+  "Prioritize the task that unlocks the others.",
+  "Ideas are plentiful; follow-through is precious.",
+  "Make the hard call, and make it kindly.",
+  "Every skill feels awkward before it feels natural.",
+  "Your energy is contagious. Bring good energy into the room.",
+  "Write it, sleep on it, then send it.",
+  "A day spent learning is never wasted.",
+  "Take one brave step toward something you care about.",
+  "Good teams debate ideas and look after each other.",
+  "Look up from the screen and smile at someone.",
+  "Organize today so tomorrow starts easily.",
+  "Say what you mean, kindly and early.",
+  "Every big change starts as a small experiment.",
+  "Remember why you started.",
+  "Measure your progress against who you were yesterday.",
+  "Make space for others to shine.",
+  "Give your best, then let go of the outcome.",
+  "Mistakes found early cost less than mistakes found late.",
+  "Bring solutions, or at least options.",
+  "Read something today that stretches your thinking.",
+  "The answer may be one good question away.",
+  "Patience with yourself is a strength.",
+  "Invest in relationships before you need them.",
+  "Turn your notes into actions within a day.",
+  "Halfway through the year: look back, then look ahead with hope.",
+  "Your effort matters more than you can see today.",
+  "Encourage someone who is just starting out.",
+  "Ask what would make this delightful.",
+  "Good systems free your mind for good ideas.",
+  "A pause before you answer can change everything.",
+  "Make the important things easy to find.",
+  "Every day offers a small chance to grow.",
+  "Lead by example, especially when it is hard.",
+  "Curiosity keeps work fresh.",
+  "Know your top three priorities by heart.",
+  "Choose words that build bridges.",
+  "Your experience is valuable. Share it.",
+  "Done today is better than perfect someday.",
+  "Find a mentor, and be one.",
+  "Take care of your body; it carries your ideas.",
+  "Turn complaints into requests.",
+  "You are allowed to change your mind when the facts change.",
+  "Make every handoff complete and kind.",
+  "The best plans are simple enough to remember.",
+  "Create something today, however small.",
+  "Listen to understand before you reply.",
+  "Ask for feedback on one specific thing.",
+  "Every team needs someone who asks why.",
+  "Your future is built from today's choices.",
+  "Tidy one small corner of your work today.",
+  "A good question can be the most helpful thing you bring.",
+  "Give people the reason along with the task.",
+  "Gratitude is a quiet superpower.",
+  "Practice saying \"I don't know yet.\"",
+  "Small, steady effort outlasts bursts of energy.",
+  "Notice what drains you and plan around it.",
+  "Write the decision down so everyone remembers it the same way.",
+  "Find the fun in the work.",
+  "Every challenge you face is building a skill.",
+  "Make time today for deep thinking.",
+  "Kindness at work is a strength.",
+  "Use AI to explore options and your judgment to choose.",
+  "Learn one new shortcut today.",
+  "Explain your idea to a friend and you will understand it better.",
+  "The calmest person in the room often leads it.",
+  "Keep your promises small and keep them all.",
+  "Each finished task makes room for the next one.",
+  "Look for the strengths in your team and build on them.",
+  "A good night's sleep is a productivity tool.",
+  "Stay humble and stay hungry to learn.",
+  "Ask what would happen if you did nothing. Then decide.",
+  "Every problem looks smaller when broken into steps.",
+  "Today, aim for steady over spectacular.",
+  "Recognize effort out loud.",
+  "Your work can make someone's day easier.",
+  "Plan your week before your week plans you.",
+  "Make it visible, make it simple, make it happen.",
+  "When things go wrong, start with care.",
+  "Pause to appreciate how far you have come.",
+  "Be someone people are glad to work with.",
+  "Learn from yesterday and act today.",
+  "Write down the question you keep avoiding.",
+  "Shorter meetings and faster decisions give everyone time back.",
+  "Growth is a series of small brave choices.",
+  "A fresh perspective is often one conversation away.",
+  "Keep your promises to the people you lead.",
+  "Spend time with ideas that scare you a little.",
+  "Simple is hard work, and worth it.",
+  "Invite disagreement early, while change is still cheap.",
+  "Each day, do one thing that moves your big goal forward.",
+  "Rest before you are exhausted.",
+  "Every good story has a turning point. Today could be yours.",
+  "Praise in public and coach in private.",
+  "Find the smallest version of your idea and test it.",
+  "Choose the harder right over the easier wrong.",
+  "Let curiosity lead you into new conversations.",
+  "Bring kindness and good questions to every room.",
+  "You grow by doing, then reflecting.",
+  "Reliable people create calm teams.",
+  "Every goal needs a first date on the calendar.",
+  "What would you try if every result were a chance to learn?",
+  "Make room for silence in conversations.",
+  "Your attention is a gift. Give it fully.",
+  "Plan for the energy you will have as well as the time.",
+  "Practice makes progress.",
+  "One thoughtful message can mend a misunderstanding.",
+  "Ask how your work connects to the bigger goal.",
+  "Take a moment to celebrate a teammate.",
+  "The best tools fit the way people already work.",
+  "Hold high standards and offer high support.",
+  "Today, do the task you have been putting off.",
+  "Write your own definition of success.",
+  "Aim for progress you can feel at the end of the day.",
+  "Let go of what you cannot control and act on what you can.",
+  "A clear goal makes every decision easier.",
+  "Leave notes your future self will understand.",
+  "Share early drafts; they invite better ideas.",
+  "Every leader was once led by someone who believed in them.",
+  "Balance urgent work with important work.",
+  "Find meaning in the small tasks too.",
+  "Ask what the simplest thing that could work might be.",
+  "Make learning part of your week.",
+  "Bring warmth to every conversation.",
+  "Courage grows each time you use it.",
+  "Treat your time as the precious resource it is.",
+  "Quiet focus produces loud results.",
+  "When you finish something, take a breath before you start again.",
+  "Look for the helpers, and be one.",
+  "Fix the process and many problems fix themselves.",
+  "A little reading every day adds up to deep knowledge.",
+  "Meet surprises with curiosity.",
+  "Let your work speak, and help it speak plainly.",
+  "Plan the week in pencil and the priorities in ink.",
+  "Every person on your team has something to teach you.",
+  "Your next good idea may arrive on a walk.",
+  "Make tomorrow's first task obvious tonight.",
+  "Celebrate finishing as much as starting.",
+  "A good apology is quick, specific and sincere.",
+  "Build skills that grow in value over time.",
+  "Ask for what you need to do your best work.",
+  "A thoughtful no protects a meaningful yes.",
+  "Look at the problem from the customer's side.",
+  "Practice gratitude before you open your inbox.",
+  "Your mindset is a choice you can make each morning.",
+  "Help people succeed and they will help you.",
+  "Do the work, then share what you learned.",
+  "There is always a next small step.",
+  "Turn your biggest goal into this week's to-do.",
+  "Spend time with people who make you better.",
+  "Every new skill opens another door.",
+  "Take the stairs, take a breath, take a break.",
+  "The most useful plans fit on one page.",
+  "Value the progress you make together.",
+  "Make the easy choice the good choice.",
+  "A warm hello can change someone's day.",
+  "Use your strengths every day.",
+  "Ask whether this is still the right goal.",
+  "Every season of work teaches something new.",
+  "Be patient with growth, in yourself and in others.",
+  "Write fewer, better messages.",
+  "Begin difficult work with a small, easy win.",
+  "Thank someone who helped you grow.",
+  "Get comfortable asking simple questions.",
+  "Great work often comes from steady, ordinary days.",
+  "Bring your whole self to the work you care about.",
+  "Make a plan B, then commit to plan A.",
+  "Find joy in the progress as well as the finish line.",
+  "Lead with empathy and follow through with action.",
+  "Today is full of small chances to do good work.",
+  "Stay open to learning from every result.",
+  "Each day you can choose who you want to be at work.",
+  "Spend most of your time on what you can improve.",
+  "Give your ideas a deadline.",
+  "When you feel overwhelmed, write everything down, then pick one.",
+  "Generosity at work comes back in unexpected ways.",
+  "Every step forward counts, including the small ones.",
+  "Make your reason bigger than your obstacles.",
+  "Quiet confidence comes from steady preparation.",
+  "A great question deserves your full attention.",
+  "Simplify your week by naming its top three.",
+  "You can learn anything one lesson at a time.",
+  "Leave space in your day for the unexpected.",
+  "Be firm about your goal and flexible about the route.",
+  "Thank yourself for the effort you have put in this year.",
+  "Share the credit and carry the responsibility.",
+  "Hope is a plan with a first step.",
+  "Make time for reflection before the year ends.",
+  "Small kindnesses make big differences.",
+  "Look back with gratitude and ahead with curiosity.",
+  "Rest, reflect and renew.",
+  "Write down what you want more of next year.",
+  "Every year leaves lessons. Keep the best ones.",
+  "Make one person's day a little brighter.",
+  "Wrap up loose ends so you can rest well.",
+  "Give yourself credit for what you have learned.",
+  "Spend time with the people who matter most.",
+  "Enjoy the quiet moments.",
+  "Write a thank-you note to someone who helped you this year.",
+  "Celebrate the progress you made this year.",
+  "Let rest be part of your plan.",
+  "Choose one word to guide the year ahead.",
+  "Notice how much you have grown.",
+  "Kindness is the best gift you can give, at work and at home.",
+  "Look back at your wins and smile.",
+  "Plan your first week of the new year with care.",
+  "Leave this year lighter than you entered it.",
+  "Dream big, then plan small.",
+  "A new year starts with a single good day.",
+  "Thank this year for its lessons.",
+  "Tomorrow is a fresh page. Write something good on it.",
+  "You made it through every hard day so far. Be proud of that."
+];
+
+  var nav = document.getElementById('nav');
+  var main = document.getElementById('main');
+  var svg = function (k) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + I[k] + '</svg>'; };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var two = function (n) { return (n < 10 ? '0' : '') + n; };
+  var sparkle = function (cls) { return '<svg class="sparkle ' + cls + '" viewBox="0 0 100 100" aria-hidden="true"><path fill="currentColor" d="M0 0Q50 34 100 0Q66 50 100 100Q50 66 0 100Q34 50 0 0Z"/></svg>'; };
+
+  TOOLS.forEach(function (t) {
+    var b = document.createElement('button');
+    b.className = 'nav';
+    b.dataset.page = t.id;
+    b.style.setProperty('--c', t.c);
+    b.innerHTML = '<span class="dot">' + svg(t.id) + '</span>' + esc(t.name);
+    nav.appendChild(b);
+  });
+
+  function road() {
+    var pts = [[100, 70], [300, 190], [500, 70], [700, 190], [900, 70]];
+    var d = 'M-20 190 H0 C50 190 50 70 100 70 C200 70 200 190 300 190 C400 190 400 70 500 70 C600 70 600 190 700 190 C800 190 800 70 900 70 C960 70 960 140 1020 140';
+    var s = '<svg viewBox="0 0 1000 260" role="group" aria-label="Your five tools as stops on a road">' +
+      '<path d="' + d + '" fill="none" stroke="var(--road)" stroke-width="34" stroke-linecap="round"/>' +
+      '<path d="' + d + '" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-dasharray="12 10" opacity=".9"/>';
+    TOOLS.forEach(function (t, i) {
+      var x = pts[i][0], y = pts[i][1];
+      s += '<g class="stop" data-page="' + t.id + '" tabindex="0" role="button" aria-label="' + esc(t.name) + '">' +
+        '<circle class="ring" cx="' + x + '" cy="' + y + '" r="30" fill="' + t.c + '" stroke="var(--card)" stroke-width="6"/>' +
+        '<svg x="' + (x - 13) + '" y="' + (y - 13) + '" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="pointer-events:none">' + I[t.id] + '</svg></g>';
+    });
+    return s + '</svg>';
+  }
+
+  var timer = null;
+  function greeting(h) { return h < 5 ? 'Good night' : h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening'; }
+  function fmtDate(d) { return d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }); }
+  function weekNo(d) { var t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())); var day = t.getUTCDay() || 7; t.setUTCDate(t.getUTCDate() + 4 - day); var y = new Date(Date.UTC(t.getUTCFullYear(), 0, 1)); return Math.ceil(((t - y) / 86400000 + 1) / 7); }
+
+  function renderToday() {
+    var now = new Date();
+    var q = QUOTES[(Math.round((new Date(now.getFullYear(), now.getMonth(), now.getDate()) - new Date(now.getFullYear(), 0, 1)) / 86400000)) % QUOTES.length];
+    var dow = now.getDay();
+    var left = dow === 0 || dow === 6 ? 'Weekend' : (5 - dow) + ' workday' + (5 - dow === 1 ? '' : 's') + ' left';
+    main.innerHTML =
+      '<section class="slide">' + sparkle('tr') + sparkle('bl') +
+        '<div class="hero"><div><div class="eyebrow">Weiwei\'s AI Hub</div><h1 class="title" style="margin-top:10px">' + greeting(now.getHours()) + ',<br>Weiwei</h1>' +
+        '<p class="lede">Five AI tools for meetings, managing, projects, planning and life. Pick a stop to begin.</p></div>' +
+        '<div class="timebox"><div class="clock" id="clock"></div><div style="color:var(--muted);font-size:13.5px">' + fmtDate(now) + '</div>' +
+        '<div class="pills"><span class="pill hot">Week ' + weekNo(now) + '</span><span class="pill">' + left + '</span></div></div></div>' +
+      '</section>' +
+      '<section class="slide quote"><span class="dot">' + svg('quote') + '</span><div><div class="eyebrow" id="lineLabel">Today\'s line</div><p id="lineText">' + esc(q) + '</p><p class="liftwhy" id="liftWhy" aria-live="polite"></p>' +
+        '<form class="lift" id="lift" hidden><label for="liftIn">Need a lift today?</label><div class="liftrow"><input id="liftIn" maxlength="300" autocomplete="off" placeholder="e.g. big presentation, feeling nervous"><button class="liftbtn" id="liftBtn" type="submit">Find my line</button></div></form></div></section>' +
+      '<section class="slide"><div class="roadhead"><h2>What\'s on your mind today?</h2><span>Pick a stop. Each one helps with a different part of your day.</span></div>' +
+        '<div class="roadwrap">' + road() + '</div>' +
+        '<div class="stops">' + TOOLS.map(function (t, i) {
+          return '<button class="stopcard" data-page="' + t.id + '" style="--c:' + t.c + '"><span class="num">' + two(i + 1) + '</span><b>' + esc(t.name) + '</b><span>' + esc(t.short) + '</span></button>';
+        }).join('') + '</div>' +
+      '</section>' +
+      '';
+    var tick = function () { var el = document.getElementById('clock'); if (el) el.textContent = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' }); };
+    tick();
+    timer = setInterval(tick, 1000);
+    setupLift(q);
+  }
+
+  var samplePromise = window.claude && window.claude.use ? window.claude.use('sample').catch(function () { return null; }) : Promise.resolve(null);
+  var liftOff = false;
+
+  function setupLift(dailyLine) {
+    var form = document.getElementById('lift');
+    samplePromise.then(function (sample) {
+      if (!sample || liftOff || !document.body.contains(form)) return;
+      form.hidden = false;
+      var input = document.getElementById('liftIn'), btn = document.getElementById('liftBtn');
+      var label = document.getElementById('lineLabel'), text = document.getElementById('lineText'), why = document.getElementById('liftWhy');
+      function showDaily() {
+        label.textContent = 'Today\'s line'; text.textContent = dailyLine; why.textContent = '';
+      }
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var mood = input.value.trim();
+        if (!mood) { input.focus(); return; }
+        btn.disabled = true; btn.textContent = 'Finding...'; why.textContent = '';
+        var list = QUOTES.map(function (x, i) { return i + ': ' + x; }).join('\n');
+        var prompt = 'Someone opened their personal hub and shared what is on their mind today. ' +
+          'Choose the ONE line from the numbered list below that would encourage them most right now, given what they wrote. ' +
+          'Then write one warm, specific sentence (under 25 words, plain English) explaining why this line fits their day. ' +
+          'Reply with only JSON: {"index": number, "why": string}\n\n' +
+          'What is on their mind (between the markers):\n<<<' + mood + '>>>\n\nLines:\n' + list;
+        sample.json(prompt, { modelTier: 'quick' }).then(function (r) {
+          var i = Number(r && r.index);
+          if (!(i >= 0 && i < QUOTES.length && Math.floor(i) === i)) throw { code: 'invalid_json' };
+          label.textContent = 'Your line for right now';
+          text.textContent = QUOTES[i];
+          why.textContent = r.why ? String(r.why).slice(0, 220) + ' ' : '';
+          var reset = document.createElement('button');
+          reset.type = 'button'; reset.className = 'liftreset'; reset.textContent = 'Back to today\'s line';
+          reset.addEventListener('click', showDaily);
+          why.appendChild(reset);
+        }).catch(function (err) {
+          var code = err && err.code;
+          if (code === 'not_granted' || code === 'sampling_disabled' || code === 'not_declared' || code === 'capability_disabled' || code === 'capability_removed') {
+            liftOff = true; form.hidden = true; showDaily(); return;
+          }
+          if (code === 'cancelled') return;
+          why.textContent = code === 'rate_limited' ? 'Lots of requests just now. Please try again in a little while.' : 'That didn\'t work this time. Please try again.';
+        }).then(function () { btn.disabled = false; btn.textContent = 'Find my line'; });
+      });
+    });
+  }
+
+  // Quick notes: private per viewer, sorted to a tool, shown on that tool's page.
+  var notesDb = null, notesCol = null, NOTES = [], notesOn = false, qnChoice = 'auto', qnSample = null;
+  var fab = document.getElementById('qnFab'), panel = document.getElementById('qnPanel');
+  var qnText = document.getElementById('qnText'), qnChips = document.getElementById('qnChips');
+  var qnAdd = document.getElementById('qnAdd'), qnMsg = document.getElementById('qnMsg');
+
+  function toolById(id) { for (var i = 0; i < TOOLS.length; i++) if (TOOLS[i].id === id) return TOOLS[i]; return null; }
+  function notesFor(id) { return NOTES.filter(function (n) { return n.tool === id; }); }
+
+  function paintBadges() {
+    Array.prototype.forEach.call(document.querySelectorAll('.nav[data-page], .stopcard[data-page]'), function (el) {
+      if (!toolById(el.dataset.page)) return;
+      var host = el.classList.contains('stopcard') ? el.querySelector('b') : el;
+      var badge = host.querySelector('.navcount');
+      if (!badge) { badge = document.createElement('span'); badge.className = 'navcount'; host.appendChild(badge); }
+      var n = notesOn ? notesFor(el.dataset.page).length : 0;
+      badge.hidden = !n;
+      badge.textContent = n;
+      badge.setAttribute('aria-label', n + ' quick note' + (n === 1 ? '' : 's'));
+    });
+  }
+
+  function copyText(s) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(s).catch(function () { return legacyCopy(s); });
+    }
+    return legacyCopy(s);
+  }
+  function legacyCopy(s) {
+    var ta = document.createElement('textarea');
+    ta.value = s; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+    return ok ? Promise.resolve() : Promise.reject();
+  }
+
+  function paintToolNotes() {
+    var box = document.getElementById('toolNotes');
+    if (!box) return;
+    if (!notesOn) { box.hidden = true; return; }
+    var t = toolById(box.dataset.tool), list = notesFor(t.id);
+    box.hidden = false;
+    box.innerHTML = '<div class="noteshead"><h3>Quick notes for ' + esc(t.name) + '</h3><span>Copy a note into the tool, then tick it off.</span></div>';
+    if (!list.length) {
+      var p = document.createElement('p'); p.className = 'notesempty';
+      p.textContent = 'Nothing waiting here. Tap Quick note any time to add one.';
+      box.appendChild(p); return;
+    }
+    var ul = document.createElement('ul'); ul.className = 'notelist';
+    list.forEach(function (n) {
+      var li = document.createElement('li');
+      var done = document.createElement('button');
+      done.type = 'button'; done.className = 'notecheck'; done.setAttribute('aria-label', 'Mark done and remove');
+      done.addEventListener('click', function () {
+        done.disabled = true;
+        notesCol.doc(n.id).delete().catch(function () { done.disabled = false; });
+      });
+      var txt = document.createElement('div'); txt.className = 'notetext';
+      txt.textContent = n.text;
+      var when = document.createElement('small');
+      when.textContent = new Date(n.created).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+      txt.appendChild(when);
+      var cp = document.createElement('button');
+      cp.type = 'button'; cp.className = 'notecopy'; cp.textContent = 'Copy';
+      cp.addEventListener('click', function () {
+        copyText(n.text).then(function () { cp.textContent = 'Copied'; }, function () { cp.textContent = 'Select to copy'; });
+        setTimeout(function () { cp.textContent = 'Copy'; }, 1800);
+      });
+      li.appendChild(done); li.appendChild(txt); li.appendChild(cp);
+      ul.appendChild(li);
+    });
+    box.appendChild(ul);
+  }
+
+  function paintNotes() { paintBadges(); paintToolNotes(); }
+
+  function paintChips() {
+    qnChips.innerHTML = '';
+    var opts = (qnSample ? [{ id: 'auto', name: 'Let AI choose', c: 'var(--orange)' }] : []).concat(TOOLS);
+    opts.forEach(function (o) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'qnchip'; b.textContent = o.name;
+      b.style.setProperty('--c', o.c);
+      b.setAttribute('aria-pressed', String(qnChoice === o.id));
+      b.addEventListener('click', function () { qnChoice = o.id; paintChips(); });
+      qnChips.appendChild(b);
+    });
+  }
+
+  function openPanel() {
+    panel.hidden = false; fab.hidden = true;
+    if (!qnSample && qnChoice === 'auto') qnChoice = null;
+    paintChips(); qnText.focus();
+  }
+  function closePanel() { panel.hidden = true; fab.hidden = !notesOn; fab.focus(); }
+
+  function aiPick(text) {
+    var list = TOOLS.map(function (t) { return t.id + ': ' + t.name + ' - ' + t.short + ' ' + t.when; }).join('\n');
+    var prompt = 'Sort a quick note into ONE of these personal tools. Pick the tool where the note would be most useful.\n\n' +
+      list + '\n\nThe note (between the markers):\n<<<' + text + '>>>\n\n' +
+      'Reply with only JSON: {"tool": "<one of: ' + TOOLS.map(function (t) { return t.id; }).join(', ') + '>"}';
+    return qnSample.json(prompt, { modelTier: 'quick' }).then(function (r) {
+      var id = r && String(r.tool);
+      if (!toolById(id)) throw { code: 'invalid_json' };
+      return id;
+    });
+  }
+
+  function addNote() {
+    var text = qnText.value.trim();
+    if (!text) { qnText.focus(); return; }
+    if (!qnChoice) { qnMsg.textContent = 'Pick a tool for this note.'; return; }
+    qnAdd.disabled = true;
+    var pick;
+    if (qnChoice === 'auto') {
+      qnMsg.textContent = 'Finding the right tool...';
+      pick = aiPick(text).catch(function (err) {
+        var code = err && err.code;
+        if (code === 'not_granted' || code === 'sampling_disabled' || code === 'not_declared' || code === 'capability_disabled' || code === 'capability_removed') qnSample = null;
+        qnChoice = null; paintChips();
+        throw { pickMsg: 'AI could not sort this one. Pick a tool and add it again.' };
+      });
+    } else pick = Promise.resolve(qnChoice);
+    pick.then(function (id) {
+      return notesCol.add({ text: text.slice(0, 1000), tool: id, created: Date.now() }).then(function () { return id; });
+    }).then(function (id) {
+      var t = toolById(id);
+      qnText.value = '';
+      qnMsg.textContent = 'Saved to ' + t.name + '. ';
+      var go = document.createElement('button');
+      go.type = 'button'; go.textContent = 'Open';
+      go.addEventListener('click', function () { closePanel(); show(id); });
+      qnMsg.appendChild(go);
+      if (qnSample) qnChoice = 'auto';
+      paintChips();
+    }).catch(function (e) {
+      qnMsg.textContent = e && e.pickMsg ? e.pickMsg : (e && e.code === 'quota_exceeded' ? 'Your notes are full. Tick some off, then try again.' : 'That note did not save. Please try again.');
+    }).then(function () { qnAdd.disabled = false; });
+  }
+
+  fab.addEventListener('click', openPanel);
+  document.getElementById('qnClose').addEventListener('click', closePanel);
+  qnAdd.addEventListener('click', addNote);
+  qnText.addEventListener('keydown', function (e) { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) addNote(); });
+  panel.addEventListener('keydown', function (e) { if (e.key === 'Escape') closePanel(); });
+
+  if (window.claude && window.claude.use) {
+    Promise.all([
+      window.claude.use('db').catch(function () { return null; }),
+      window.claude.use('user').catch(function () { return null; }),
+      samplePromise
+    ]).then(function (r) {
+      var db = r[0], user = r[1];
+      qnSample = r[2];
+      if (!db || !user) return null;
+      return Promise.all([user.id(), user.isOwner(), user.can('data.write')]).then(function (v) {
+        var uid = v[0];
+        if (!uid || !(v[1] || v[2] === true)) return;
+        notesDb = db;
+        notesCol = db.collection('data/users/' + uid);
+        notesCol.orderBy('created', 'asc').onSnapshot(function (snap) {
+          NOTES = snap.docs.map(function (d) { var x = d.data() || {}; return { id: d.id, text: String(x.text || ''), tool: x.tool, created: x.created || 0 }; })
+            .filter(function (n) { return n.text && toolById(n.tool); });
+          if (!notesOn) { notesOn = true; document.body.classList.add('hasnotes'); if (panel.hidden) fab.hidden = false; }
+          paintNotes();
+        }, function () {
+          notesOn = false; NOTES = []; fab.hidden = true; panel.hidden = true; document.body.classList.remove('hasnotes'); paintNotes();
+        });
+      });
+    }).catch(function () {});
+  }
+
+  function renderTool(t, idx) {
+    main.innerHTML =
+      '<section class="slide toolslide" style="--c:' + t.c + '">' + sparkle('tr') +
+        '<div class="bigcircle"><div><span class="dot">' + svg(t.id) + '</span><span class="zone">' + two(idx + 1) + ' · ' + esc(t.zone) + '</span><h1>' + esc(t.name) + '</h1><p>' + esc(t.short) + '</p></div></div>' +
+        '<div><p class="lede tool">' + esc(t.lede) + '</p><ol class="steps">' +
+          t.what.map(function (w, i) {
+            return '<li><span class="dot" style="--c:' + (i === 1 ? 'var(--road)' : t.c) + '">' + svg(w[0]) + '</span><span class="num">' + two(i + 1) + '</span><div><b>' + esc(w[1]) + '</b><span>' + esc(w[2]) + '</span></div></li>';
+          }).join('') +
+        '</ol></div>' +
+      '</section>' +
+      '<div class="duo">' +
+        '<section class="slide openslide"><div class="eyebrow">Full version</div><div class="btnrow"><a class="openbtn" href="https://www.linkedin.com/in/weiweihu/" target="_blank" rel="noopener" title="Weiwei Hu on LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Invite only <i aria-hidden="true">↗</i></a>' + (t.sample ? '<a class="samplebtn" href="' + t.sample + '" target="_blank" rel="noopener">See sample page <i aria-hidden="true">↗</i></a>' : '') + '</div></section>' +
+        '<section class="slide whenslide"><h3>When to use it</h3><p>' + esc(t.when) + '</p></section>' +
+      '</div>' +
+      '<section class="slide notesslide" id="toolNotes" data-tool="' + t.id + '" style="--c:' + t.c + '" hidden></section>';
+  }
+
+  function show(page) {
+    if (timer) { clearInterval(timer); timer = null; }
+    var idx = -1;
+    TOOLS.forEach(function (x, i) { if (x.id === page) idx = i; });
+    if (idx >= 0) renderTool(TOOLS[idx], idx); else { page = 'today'; renderToday(); }
+    Array.prototype.forEach.call(nav.querySelectorAll('.nav'), function (b) {
+      if (b.dataset.page === page) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
+    });
+    paintNotes();
+    try { localStorage.setItem('wb-page', page); } catch (e) {}
+    window.scrollTo(0, 0);
+  }
+
+  document.addEventListener('click', function (e) {
+    var el = e.target.closest('[data-page]');
+    if (el) show(el.dataset.page);
+  });
+  document.addEventListener('keydown', function (e) {
+    var el = e.target;
+    if ((e.key === 'Enter' || e.key === ' ') && el.getAttribute && el.getAttribute('class') === 'stop') {
+      e.preventDefault();
+      show(el.getAttribute('data-page'));
+    }
+  });
+
+  var first = (location.hash || '').slice(1);
+  if (!first) { try { first = localStorage.getItem('wb-page') || ''; } catch (e) {} }
+  show(first || 'today');
+})();
+</script>
+
+</body>
+</html>
