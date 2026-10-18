@@ -19,13 +19,13 @@ The **Today** page greets you with the date, the week number and how many workda
 | 01 | **Minutes to Actions** | Meeting notes in, minutes and action items out. |
 | 02 | **Manager Playbook** | 1:1s, feedback and weekly reports. [See sample page](https://wei-wei-hu.github.io/manager-playbook/) |
 | 03 | **Program Status Board** | Projects, milestones and the weekly update. |
-| 04 | **The Weekly Planner** | The week ahead, by person and project. [See sample page](https://wei-wei-hu.github.io/the-weekly-planner/) |
+| 04 | **The Atelier** | Where your best work and life take shape. [See sample page](https://wei-wei-hu.github.io/the-atelier/) |
 | 05 | **Life Designer Pro** | Your whole life on one page. [See sample page](https://wei-wei-hu.github.io/life-designer-pro/) |
 
 Each tool has its own page. It explains what the tool does in three steps and suggests when to use it.
 
 <p>
-  <a href="https://wei-wei-hu.github.io/ai-hub/"><img src="docs/preview-tool.png" alt="The Weekly Planner page with two quick notes waiting" width="64%"></a>
+  <a href="https://wei-wei-hu.github.io/ai-hub/"><img src="docs/preview-tool.png" alt="The Atelier page with two quick notes waiting" width="64%"></a>
   <a href="https://wei-wei-hu.github.io/ai-hub/"><img src="docs/preview-phone.png" alt="AI Hub Today page on a phone" width="30%"></a>
 </p>
 
