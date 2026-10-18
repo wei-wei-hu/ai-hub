@@ -12,7 +12,7 @@ It opens in your browser on a phone or laptop. Nothing to install, and no sign-i
 
 ## What's inside
 
-The **Today** page greets you with the time, the date, the week number and how many workdays are left. Below that is a road with one stop for each tool.
+The **Today** page greets you with the date, the week number and how many workdays are left. Further down, a timeline has one stop for each tool.
 
 | # | Tool | What it helps with |
 |---|------|--------------------|
