@@ -8,7 +8,7 @@ Your AI helpers for meetings, managing, projects, planning and life, all in one 
 
 It opens in your browser on a phone or laptop. Nothing to install, and no sign-in.
 
-[![Weiwei's AI Hub Today page on a laptop. Click to open the live page.](docs/preview-laptop.png)](https://wei-wei-hu.github.io/ai-hub/)
+<a href="https://wei-wei-hu.github.io/ai-hub/"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/preview-laptop-dark.png"><img src="docs/preview-laptop-light.png" alt="Weiwei's AI Hub Today page on a laptop. Click to open the live page."></picture></a>
 
 ## What's inside
 
@@ -25,8 +25,8 @@ The **Today** page greets you with the date, the week number and how many workda
 Each tool has its own page. It explains what the tool does in three steps and suggests when to use it.
 
 <p>
-  <a href="https://wei-wei-hu.github.io/ai-hub/"><img src="docs/preview-tool.png" alt="The Atelier page with two quick notes waiting" width="64%"></a>
-  <a href="https://wei-wei-hu.github.io/ai-hub/"><img src="docs/preview-phone.png" alt="AI Hub Today page on a phone" width="30%"></a>
+  <a href="https://wei-wei-hu.github.io/ai-hub/"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/preview-tool-dark.png"><img src="docs/preview-tool-light.png" alt="The Atelier page with two quick notes waiting" width="64%"></picture></a>
+  <a href="https://wei-wei-hu.github.io/ai-hub/"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/preview-phone-dark.png"><img src="docs/preview-phone-light.png" alt="AI Hub Today page on a phone" width="30%"></picture></a>
 </p>
 
 ## Today's line and "Need a lift today?"
@@ -35,7 +35,7 @@ Every day the Hub shows a short line to start the day well. There are 366 of the
 
 Want a line that fits your day? Type what's on your mind, such as "big presentation, feeling nervous," and tap **Find my line**. The Hub picks the line that matches best and tells you why it fits.
 
-[![Need a lift today? box showing a line picked for a nervous day](docs/preview-lift.png)](https://wei-wei-hu.github.io/ai-hub/)
+<a href="https://wei-wei-hu.github.io/ai-hub/"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/preview-lift-dark.png"><img src="docs/preview-lift-light.png" alt="Need a lift today? box showing a line picked for a nervous day"></picture></a>
 
 ## Quick note
 
@@ -47,8 +47,8 @@ Right under Today's line, a note box sits above your list of notes. Type a thoug
 - Notes are saved in your own browser. Nobody else can see them, and nothing is sent anywhere.
 
 <p>
-  <a href="https://wei-wei-hu.github.io/ai-hub/"><img src="docs/preview-quick-note.png" alt="Quick note card on a tool page, with tool choices and an Add note button" width="49%"></a>
-  <a href="https://wei-wei-hu.github.io/ai-hub/"><img src="docs/preview-notes.png" alt="The note box and your quick notes on the Today page" width="49%"></a>
+  <a href="https://wei-wei-hu.github.io/ai-hub/"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/preview-quick-note-dark.png"><img src="docs/preview-quick-note-light.png" alt="Quick note card on a tool page, with tool choices and an Add note button" width="49%"></picture></a>
+  <a href="https://wei-wei-hu.github.io/ai-hub/"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/preview-notes-dark.png"><img src="docs/preview-notes-light.png" alt="The note box and your quick notes on the Today page" width="49%"></picture></a>
 </p>
 
 ## Full versions
