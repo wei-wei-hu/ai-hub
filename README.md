@@ -16,11 +16,11 @@ The **Today** page greets you with the date, the week number and how many workda
 
 | # | Tool | What it helps with |
 |---|------|--------------------|
-| 01 | **Minutes to Actions** | Meeting notes in, minutes and action items out. |
-| 02 | **Manager Playbook** | 1:1s, feedback and weekly reports. [See sample page](https://wei-wei-hu.github.io/manager-playbook/) |
-| 03 | **Program Status Board** | Projects, milestones and the weekly update. |
-| 04 | **The Atelier** | Where your best work and life take shape. [See sample page](https://wei-wei-hu.github.io/the-atelier/) |
-| 05 | **Life Designer Pro** | Your whole life on one page. [See sample page](https://wei-wei-hu.github.io/life-designer-pro/) |
+| 01 | **The Atelier** | Where your best work and life take shape. [See sample page](https://wei-wei-hu.github.io/the-atelier/) |
+| 02 | **Life Designer Pro** | Your whole life on one page. [See sample page](https://wei-wei-hu.github.io/life-designer-pro/) |
+| 03 | **Manager Playbook** | 1:1s, feedback and weekly reports. [See sample page](https://wei-wei-hu.github.io/manager-playbook/) |
+| 04 | **Program Status Board** | Projects, milestones and the weekly update. |
+| 05 | **Minutes to Actions** | Meeting notes in, minutes and action items out. |
 
 Each tool has its own page. It explains what the tool does in three steps and suggests when to use it.
 
@@ -56,6 +56,7 @@ Right under Today's line, a note box sits above your list of notes. Type a thoug
 The full versions of the tools are **invite only**. To learn more, visit [Weiwei Hu on LinkedIn](https://www.linkedin.com/in/weiweihu/).
 
 - Live page: https://wei-wei-hu.github.io/ai-hub/
+- Website: https://weiweihu.carrd.co/
 - LinkedIn: https://www.linkedin.com/in/weiweihu/
 
 ## License
