@@ -61,6 +61,6 @@ The full versions of the tools are **invite only**. To learn more, visit [Weiwei
 
 ## License
 
-This repository is **proprietary**. It is not open source. You may view the code and use the live page for personal, non-commercial use. Copying, changing, reusing, hosting, selling, or using any part of it to train AI requires written permission from Weiwei Hu. See [LICENSE](LICENSE) for the full terms.
+This repository is **proprietary and view-only**. It is not open source. You may view it and use the live page for personal, non-commercial use, and you may link to the live page. Copying, changing, reusing, hosting, selling, embedding or imitating any part of it requires written permission from Weiwei Hu. Scraping it, and using it to train or test any AI system, is not allowed. See [LICENSE](LICENSE) for the full terms.
 
 © 2026 Weiwei Hu. All rights reserved.
