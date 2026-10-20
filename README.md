@@ -18,7 +18,7 @@ The **Today** page greets you with the date, the week number and how many workda
 |---|------|--------------------|
 | 01 | **The Atelier** | Where your best work and life take shape. [See sample page](https://wei-wei-hu.github.io/the-atelier/) |
 | 02 | **Life Designer Pro** | Your whole life on one page. [See sample page](https://wei-wei-hu.github.io/life-designer-pro/) |
-| 03 | **Manager Playbook** | 1:1s, feedback and weekly reports. [See sample page](https://wei-wei-hu.github.io/manager-playbook/) |
+| 03 | **Underline** | Bring one situation. Know your next best action. [See sample page](https://wei-wei-hu.github.io/underline/) |
 | 04 | **Program Status Board** | Projects, milestones and the weekly update. |
 | 05 | **Minutes to Actions** | Meeting notes in, minutes and action items out. |
 
