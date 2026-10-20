@@ -18,7 +18,7 @@ The **Today** page greets you with the date, the week number and how many workda
 |---|------|--------------------|
 | 01 | **The Atelier** | Where your best work and life take shape. [See sample page](https://wei-wei-hu.github.io/the-atelier/) |
 | 02 | **Life Designer Pro** | Your whole life on one page. [See sample page](https://wei-wei-hu.github.io/life-designer-pro/) |
-| 03 | **Underline AI** | Bring one situation. Know your next best action. [See sample page](https://wei-wei-hu.github.io/underline-ai/) |
+| 03 | **Underline AI** | Bring one situation. Leave with a one-page actionable plan. [See the page](https://wei-wei-hu.github.io/underline-ai/) |
 | 04 | **Program Status Board** | Projects, milestones and the weekly update. |
 | 05 | **Minutes to Actions** | Meeting notes in, minutes and action items out. |
 
@@ -53,7 +53,7 @@ Right under Today's line, a note box sits above your list of notes. Type a thoug
 
 ## Full versions
 
-The full versions of the tools are **invite only**. To learn more, visit [Weiwei Hu on LinkedIn](https://www.linkedin.com/in/weiweihu/).
+Underline AI has a [free trial](https://wei-wei-hu.github.io/underline-ai/) and [full access](https://buy.stripe.com/cNi14nfzP6RKfkX9F2eQM00). The full versions of the other tools are **invite only**. To learn more, visit [Weiwei Hu on LinkedIn](https://www.linkedin.com/in/weiweihu/).
 
 - Live page: https://wei-wei-hu.github.io/ai-hub/
 - Website: https://weiweihu.carrd.co/
