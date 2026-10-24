@@ -19,7 +19,7 @@ The **Today** page greets you with the date, the week number and how many workda
 | 01 | **Life Designer Pro** | Your whole life on one page. [See sample page](https://wei-wei-hu.github.io/life-designer-pro/) |
 | 02 | **Underline AI** | Bring one situation. Leave with a one-page actionable plan. [See the page](https://wei-wei-hu.github.io/underline-ai/) |
 | 03 | **The Atelier** | Where your best work and life take shape. [See an example](https://wei-wei-hu.github.io/the-atelier/#introExample) · [Start free trial](https://wei-wei-hu.github.io/the-atelier/) |
-| 04 | **Program Status Board** | Projects, milestones and the weekly update. |
+| 04 | **Program Status Board** | Projects, milestones and the weekly update. [See the page](https://wei-wei-hu.github.io/program-management/) |
 | 05 | **Minutes to Actions** | Meeting notes in, minutes and action items out. |
 
 Each tool has its own page. It explains what the tool does in three steps and suggests when to use it.
