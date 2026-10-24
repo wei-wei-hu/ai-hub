@@ -370,8 +370,7 @@ body.hasnotes .maincol { padding-bottom: 76px; }
     quote: '<path d="M6 17c-1.5 0-2.5-1.2-2.5-3 0-3.5 2-6.4 5-7.5M15 17c-1.5 0-2.5-1.2-2.5-3 0-3.5 2-6.4 5-7.5"/><circle cx="6.2" cy="14.2" r="2.6"/><circle cx="15.2" cy="14.2" r="2.6"/>'
   };
   var TOOLS = [
-    { id: 'planner', name: 'The Atelier', sample: 'https://wei-wei-hu.github.io/the-atelier/', zone: 'Set out', c: 'var(--t4)',
-      trial: 'https://wei-wei-hu.github.io/the-atelier/app/', access: 'https://www.linkedin.com/in/weiweihu/', accessLabel: 'Become a member',
+    { id: 'planner', name: 'The Atelier', start: 'https://wei-wei-hu.github.io/the-atelier/', zone: 'Set out', c: 'var(--t4)',
       short: 'Where your best work and life take shape.',
       lede: 'Set your goals, plan your days, and let AI turn what you complete into your accomplishments, ready for your next opportunity or your next review.',
       what: [
@@ -1261,9 +1260,10 @@ body.hasnotes .maincol { padding-bottom: 76px; }
         '</ol></div>' +
       '</section>' +
       '<div class="duo">' +
-        '<section class="slide openslide"><div class="eyebrow">Full version</div><div class="btnrow">' +
+        '<section class="slide openslide"><div class="eyebrow">' + (t.start ? 'Free trial &amp; membership' : 'Full version') + '</div><div class="btnrow">' +
           // A tool with its own sign-up (Underline AI) links to it; the others are invite only.
-          (t.access ? '<a class="openbtn" href="' + t.access + '" target="_blank" rel="noopener">' + esc(t.accessLabel || 'Get full access') + ' <i aria-hidden="true">↗</i></a>'
+          (t.start ? '<a class="openbtn" href="' + t.start + '" target="_blank" rel="noopener">Start free trial <i aria-hidden="true">↗</i></a>'
+                    : t.access ? '<a class="openbtn" href="' + t.access + '" target="_blank" rel="noopener">' + esc(t.accessLabel || 'Get full access') + ' <i aria-hidden="true">↗</i></a>'
                     : '<a class="openbtn" href="https://www.linkedin.com/in/weiweihu/" target="_blank" rel="noopener" title="Weiwei Hu on LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Invite only <i aria-hidden="true">↗</i></a>') +
           (t.trial ? '<a class="samplebtn" href="' + t.trial + '" target="_blank" rel="noopener">Free trial <i aria-hidden="true">↗</i></a>' : '') +
           (t.sample ? '<a class="samplebtn" href="' + t.sample + '" target="_blank" rel="noopener">' + esc(t.sampleLabel || 'See sample page') + ' <i aria-hidden="true">↗</i></a>' : '') + '</div></section>' +
