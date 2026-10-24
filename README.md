@@ -53,7 +53,7 @@ Right under Today's line, a note box sits above your list of notes. Type a thoug
 
 ## Full versions
 
-Underline AI has a [free trial](https://wei-wei-hu.github.io/underline-ai/) and [full access](https://buy.stripe.com/cNi14nfzP6RKfkX9F2eQM00). The full versions of the other tools are **invite only**. To learn more, visit [Weiwei Hu on LinkedIn](https://www.linkedin.com/in/weiweihu/).
+The Atelier has a [7-day free trial](https://wei-wei-hu.github.io/the-atelier/app/) and a membership. Underline AI has a [free trial](https://wei-wei-hu.github.io/underline-ai/) and [full access](https://buy.stripe.com/cNi14nfzP6RKfkX9F2eQM00). The full versions of the other tools are **invite only**. To learn more, visit [Weiwei Hu on LinkedIn](https://www.linkedin.com/in/weiweihu/).
 
 - Live page: https://wei-wei-hu.github.io/ai-hub/
 - Website: https://weiweihu.carrd.co/
