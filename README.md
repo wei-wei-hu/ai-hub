@@ -16,7 +16,7 @@ The **Today** page greets you with the date, the week number and how many workda
 
 | # | Tool | What it helps with |
 |---|------|--------------------|
-| 01 | **The Atelier** | Where your best work and life take shape. [Start free trial](https://wei-wei-hu.github.io/the-atelier/) |
+| 01 | **The Atelier** | Where your best work and life take shape. [See an example](https://wei-wei-hu.github.io/the-atelier/#introExample) · [Start free trial](https://wei-wei-hu.github.io/the-atelier/) |
 | 02 | **Life Designer Pro** | Your whole life on one page. [See sample page](https://wei-wei-hu.github.io/life-designer-pro/) |
 | 03 | **Underline AI** | Bring one situation. Leave with a one-page actionable plan. [See the page](https://wei-wei-hu.github.io/underline-ai/) |
 | 04 | **Program Status Board** | Projects, milestones and the weekly update. |

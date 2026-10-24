@@ -208,6 +208,8 @@ button { cursor: pointer; }
 .samplebtn { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); background: var(--panel2); border: 1px solid var(--line2); font-weight: 600; font-size: 13px; padding: 10px 16px; border-radius: 10px; }
 .samplebtn i { font-style: normal; font-size: 14px; color: var(--accent-ink); }
 .samplebtn:hover { border-color: var(--accent); }
+.tbtns { margin-top: 20px; flex-direction: column; align-items: stretch; }
+.tbtns .openbtn, .tbtns .samplebtn { justify-content: center; }
 .whenslide { border-style: dashed; border-color: var(--line2); background: transparent; }
 .whenslide h3 { font: 500 11.5px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 .whenslide p { margin: 8px 0 0; font-size: 14px; font-weight: 500; }
@@ -370,7 +372,7 @@ body.hasnotes .maincol { padding-bottom: 76px; }
     quote: '<path d="M6 17c-1.5 0-2.5-1.2-2.5-3 0-3.5 2-6.4 5-7.5M15 17c-1.5 0-2.5-1.2-2.5-3 0-3.5 2-6.4 5-7.5"/><circle cx="6.2" cy="14.2" r="2.6"/><circle cx="15.2" cy="14.2" r="2.6"/>'
   };
   var TOOLS = [
-    { id: 'planner', name: 'The Atelier', start: 'https://wei-wei-hu.github.io/the-atelier/', zone: 'Set out', c: 'var(--t4)',
+    { id: 'planner', name: 'The Atelier', sample: 'https://wei-wei-hu.github.io/the-atelier/#introExample', sampleLabel: 'See an example', start: 'https://wei-wei-hu.github.io/the-atelier/', zone: 'Set out', c: 'var(--t4)',
       short: 'Where your best work and life take shape.',
       lede: 'Set your goals, plan your days, and let AI turn what you complete into your accomplishments, ready for your next opportunity or your next review.',
       what: [
@@ -1249,26 +1251,34 @@ body.hasnotes .maincol { padding-bottom: 76px; }
     useLocal();
   }
 
+  // Buttons sit right under the tool's title. The Atelier leads with an example and a free trial;
+  // Underline AI has its own sign-up; the others are invite only.
+  function toolButtons(t) {
+    var arrow = ' <i aria-hidden="true">\u2197</i></a>';
+    function link(cls, href, label) { return '<a class="' + cls + '" href="' + href + '" target="_blank" rel="noopener">' + esc(label) + arrow; }
+    var out = '';
+    if (t.start) {
+      out = (t.sample ? link('samplebtn', t.sample, t.sampleLabel || 'See sample page') : '') + link('openbtn', t.start, 'Start free trial');
+    } else {
+      out = t.access ? link('openbtn', t.access, t.accessLabel || 'Get full access')
+        : '<a class="openbtn" href="https://www.linkedin.com/in/weiweihu/" target="_blank" rel="noopener" title="Weiwei Hu on LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Invite only' + arrow;
+      if (t.trial) out += link('samplebtn', t.trial, 'Free trial');
+      if (t.sample) out += link('samplebtn', t.sample, t.sampleLabel || 'See sample page');
+    }
+    return '<div class="btnrow tbtns">' + out + '</div>';
+  }
+
   function renderTool(t, idx) {
     main.innerHTML =
       '<section class="slide toolslide ticks" style="--c:' + t.c + '">' +
-        '<div class="titlecard"><span class="ghostnum" aria-hidden="true">' + two(idx + 1) + '</span><span class="dot">' + svg(t.id) + '</span><span class="zone">Module ' + two(idx + 1) + '<span class="sep"> / </span>' + esc(t.zone) + '</span><h1>' + esc(t.name) + '</h1><p>' + esc(t.short) + '</p></div>' +
+        '<div class="titlecard"><span class="ghostnum" aria-hidden="true">' + two(idx + 1) + '</span><span class="dot">' + svg(t.id) + '</span><span class="zone">Module ' + two(idx + 1) + '<span class="sep"> / </span>' + esc(t.zone) + '</span><h1>' + esc(t.name) + '</h1><p>' + esc(t.short) + '</p>' + toolButtons(t) + '</div>' +
         '<div><p class="lede tool">' + esc(t.lede) + '</p><ol class="steps">' +
           t.what.map(function (w, i) {
             return '<li><span class="num">' + two(i + 1) + '</span><div class="stepcard"><span class="dot">' + svg(w[0]) + '</span><div><b>' + esc(w[1]) + '</b><span>' + esc(w[2]) + '</span></div></div></li>';
           }).join('') +
         '</ol></div>' +
       '</section>' +
-      '<div class="duo">' +
-        '<section class="slide openslide"><div class="eyebrow">' + (t.start ? 'Free trial &amp; membership' : 'Full version') + '</div><div class="btnrow">' +
-          // A tool with its own sign-up (Underline AI) links to it; the others are invite only.
-          (t.start ? '<a class="openbtn" href="' + t.start + '" target="_blank" rel="noopener">Start free trial <i aria-hidden="true">↗</i></a>'
-                    : t.access ? '<a class="openbtn" href="' + t.access + '" target="_blank" rel="noopener">' + esc(t.accessLabel || 'Get full access') + ' <i aria-hidden="true">↗</i></a>'
-                    : '<a class="openbtn" href="https://www.linkedin.com/in/weiweihu/" target="_blank" rel="noopener" title="Weiwei Hu on LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Invite only <i aria-hidden="true">↗</i></a>') +
-          (t.trial ? '<a class="samplebtn" href="' + t.trial + '" target="_blank" rel="noopener">Free trial <i aria-hidden="true">↗</i></a>' : '') +
-          (t.sample ? '<a class="samplebtn" href="' + t.sample + '" target="_blank" rel="noopener">' + esc(t.sampleLabel || 'See sample page') + ' <i aria-hidden="true">↗</i></a>' : '') + '</div></section>' +
-        '<section class="slide whenslide"><h3>When to use it</h3><p>' + esc(t.when) + '</p></section>' +
-      '</div>' +
+      '<section class="slide whenslide"><h3>When to use it</h3><p>' + esc(t.when) + '</p></section>' +
       '<section class="slide notesslide" id="toolNotes" data-tool="' + t.id + '" style="--c:' + t.c + '" hidden></section>';
   }
 
