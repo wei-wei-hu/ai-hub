@@ -372,15 +372,15 @@ body.hasnotes .maincol { padding-bottom: 76px; }
     quote: '<path d="M6 17c-1.5 0-2.5-1.2-2.5-3 0-3.5 2-6.4 5-7.5M15 17c-1.5 0-2.5-1.2-2.5-3 0-3.5 2-6.4 5-7.5"/><circle cx="6.2" cy="14.2" r="2.6"/><circle cx="15.2" cy="14.2" r="2.6"/>'
   };
   var TOOLS = [
-    { id: 'life', name: 'Life Designer Pro', sample: 'https://wei-wei-hu.github.io/life-designer-pro/', zone: 'Life', c: 'var(--t5)',
-      short: 'Your whole life on one page.',
-      lede: 'Rate the eight areas of your life, find the question that really matters, sketch three possible futures and pick one small thing to try this week.',
+    { id: 'life', name: 'Life Designer Pro', start: 'https://wei-wei-hu.github.io/life-designer-pro/', startLabel: 'Open the Life Canvas', member: true, zone: 'Life', c: 'var(--t5)',
+      short: 'Think through the life behind your next decision.',
+      lede: 'Start with one question about a decision or part of your life. Fill in a one-page canvas, compare three possible futures, and leave with a letter from your future self and one small experiment to try this week. Free, private and in your browser.',
       what: [
-        ['heart', 'The eight areas today', 'Score well-being, work, love, fun, learning, community, money and meaning from 0 to 10, then name the one that needs you most.'],
-        ['route', 'Three paths', 'Keep going, a different road, and what you would do with no one watching. Each one described as an ordinary day.'],
-        ['spark', 'Your next small test', 'One thing to try this week, what you protect no matter what, and how often you will check back in.']
+        ['target', 'Start with one question', 'Name the decision on your mind, rate eight areas of life from 0 to 10, and add what gives you energy, who you admire and who you help. Type it or talk it.'],
+        ['route', 'Explore three futures', 'Your current direction, an adjacent life and an unconstrained life, each described as an ordinary day. Then choose one experiment small enough to start this week.'],
+        ['spark', 'Get your letter and map', 'A letter from your future self that you can read or listen to, a one-page life map, a printable card and an image prompt for your next chapter.']
       ],
-      when: 'Once a month or once a season, or whenever a big choice comes up.' },
+      when: 'Before a big decision, or once a season.' },
     { id: 'playbook', name: 'Underline AI', sample: 'https://wei-wei-hu.github.io/underline-ai/#try', sampleLabel: 'See examples', zone: 'Work on', c: 'var(--t2)',
       trial: 'https://wei-wei-hu.github.io/underline-ai/#own', access: 'https://buy.stripe.com/cNi14nfzP6RKfkX9F2eQM00',
       short: 'Bring one situation. Leave with a one-page actionable plan.',
@@ -1258,13 +1258,14 @@ body.hasnotes .maincol { padding-bottom: 76px; }
     function link(cls, href, label) { return '<a class="' + cls + '" href="' + href + '" target="_blank" rel="noopener">' + esc(label) + arrow; }
     var out = '';
     if (t.start) {
-      out = (t.sample ? link('samplebtn', t.sample, t.sampleLabel || 'See sample page') : '') + link('openbtn', t.start, 'Start free trial');
+      out = (t.sample ? link('samplebtn', t.sample, t.sampleLabel || 'See sample page') : '') + link('openbtn', t.start, t.startLabel || 'Start free trial');
     } else {
       out = t.access ? link('openbtn', t.access, t.accessLabel || 'Get full access')
         : '<a class="openbtn" href="https://www.linkedin.com/in/weiweihu/" target="_blank" rel="noopener" title="Weiwei Hu on LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Invite only' + arrow;
       if (t.trial) out += link('samplebtn', t.trial, 'Free trial');
       if (t.sample) out += link('samplebtn', t.sample, t.sampleLabel || 'See sample page');
     }
+    if (t.member) out += link('samplebtn', 'https://www.linkedin.com/in/weiweihu/', 'Request member access');
     return '<div class="btnrow tbtns">' + out + '</div>';
   }
 
